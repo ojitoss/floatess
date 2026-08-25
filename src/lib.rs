@@ -8,18 +8,24 @@ pub struct Decimal<'a> {
 
 impl fmt::Display for Decimal<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut post = String::new();
+        let len = self.post.len();
 
-        let mut i = self.post.len() - 1;
-        loop {
-            // usize can be less than zero but this had the same function using a overflow
-            if i == usize::MAX { break };
+        let post = if len > 0 {
+            let mut stack = String::new();
+            let mut i = len - 1;
 
-            let part = self.post[i];
+            loop {
+                // usize can be less than zero but this had the same function using a overflow
+                if i == usize::MAX { break };
+    
+                let part = self.post[i];
+    
+                stack.push_str(&part.to_string());
+                i = i.wrapping_sub(1);
+            }
 
-            post.push_str(&part.to_string());
-            i = i.wrapping_sub(1);
-        }
+            stack
+        } else { "0".to_string() };
 
         write!(f, "{}.{}", self.pre.to_string(), post)
     }
