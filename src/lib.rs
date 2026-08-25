@@ -1,7 +1,28 @@
+use core::fmt;
+
 #[derive(Debug)]
 pub struct Decimal<'a> {
     pub pre: u32,
     pub post: &'a [u8]
+}
+
+impl fmt::Display for Decimal<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut post = String::new();
+
+        let mut i = self.post.len() - 1;
+        loop {
+            // usize can be less than zero but this had the same function using a overflow
+            if i == usize::MAX { break };
+
+            let part = self.post[i];
+
+            post.push_str(&part.to_string());
+            i = i.wrapping_sub(1);
+        }
+
+        write!(f, "{}.{}", self.pre.to_string(), post)
+    }
 }
 
 impl<'a> Decimal<'a> {
