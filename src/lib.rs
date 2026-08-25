@@ -83,11 +83,17 @@ mod tests {
 
     #[test]
     fn from_str() {
-        let origin = "1.45";
+        let cases = [
+            ("1.45", "1.45", Decimal { pre: 1, post: &[5, 4] }),
+            ("1.", "1.0", Decimal { pre: 1, post: &[] }),
+            ("1", "1.0", Decimal { pre: 1, post: &[] })
+        ];
 
-        let decimal = Decimal::str_to_decimal(origin);
+        for (input_num, expected_str, expected_decimal) in cases {
+            let decimal = Decimal::str_to_decimal(input_num);
 
-        assert_eq!(decimal, Decimal { pre: 1, post: &[5, 4] });
-        assert_eq!(format!("{decimal}"), origin);
+            assert_eq!(decimal, expected_decimal);
+            assert_eq!(format!("{decimal}"), expected_str);
+        }
     }
 }
