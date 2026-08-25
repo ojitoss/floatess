@@ -1,6 +1,6 @@
 use core::fmt;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct Decimal<'a> {
     pub pre: u32,
     pub post: &'a [u8]
@@ -68,5 +68,20 @@ impl<'a> Decimal<'a> {
             pre: pre.parse().unwrap(),
             post: Box::leak(post.into_iter().rev().collect::<Vec<u8>>().into_boxed_slice())
          }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn from_str() {
+        let origin = "1.45";
+
+        let decimal = Decimal::str_to_decimal(origin);
+
+        assert_eq!(decimal, Decimal { pre: 1, post: &[5, 4] });
+        assert_eq!(format!("{decimal}"), origin);
     }
 }
