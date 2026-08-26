@@ -27,7 +27,7 @@ impl fmt::Display for Decimal<'_> {
             stack
         } else { "0".to_string() };
 
-        write!(f, "{}.{}", self.pre.to_string(), post)
+        write!(f, "{}.{}", self.pre, post)
     }
 }
 
