@@ -37,10 +37,11 @@ impl<'a> Add for Decimal<'a> {
 
     fn add(self, rhs: Self) -> Self::Output {
         let mut add_one_next = false;
-        let len = self.post.len();
-        let mut res = Vec::<u8>::with_capacity(len);
+        let self_len = self.post.len();
+        let self_len_minus_one = self_len - 1;
+        let mut res = Vec::<u8>::with_capacity(self_len);
 
-        for i in 0..len {
+        for i in 0..self_len {
             let left = self.post[i];
             let right = rhs.post[i];
 
@@ -51,7 +52,7 @@ impl<'a> Add for Decimal<'a> {
             res.push(to_push);
 
             // to keep the last sum to 'pre' prop
-            if i < len - 1 {
+            if i < self_len_minus_one {
                 add_one_next = !low_ten;
             }
         }
