@@ -16,7 +16,7 @@ impl fmt::Display for Decimal<'_> {
             let mut i = len - 1;
 
             loop {
-                // usize can be less than zero but this had the same function using a overflow
+                // usize can't be lower than zero, so this had the same function than had a 'i < 0' but using an overflow
                 if i == usize::MAX { break };
     
                 let part = self.post[i];
