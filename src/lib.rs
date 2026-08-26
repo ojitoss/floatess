@@ -32,7 +32,7 @@ impl fmt::Display for Decimal<'_> {
 }
 
 impl<'a> Decimal<'a> {
-    pub fn str_to_decimal(string: &'a str) -> Decimal<'a> {
+    pub fn str_to_decimal(string: &'a str) -> Self {
         let mut pre = String::new();
         let mut post = Vec::<u8>::new();
 
@@ -70,7 +70,7 @@ impl<'a> Decimal<'a> {
             }
         }
 
-        Decimal { 
+        Self { 
             pre: pre.parse().unwrap(),
             post: Box::leak(post.into_iter().rev().collect::<Vec<u8>>().into_boxed_slice())
          }
