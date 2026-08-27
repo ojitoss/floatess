@@ -84,6 +84,10 @@ mod tests {
     use std::str::FromStr;
     use super::*;
 
+    fn failed_template(s: &str) -> String {
+        format!("\x1b[31mFailed in '{s}' case\x1b[0m")
+    }
+
     #[test]
     fn from_str() {
         let cases = [
@@ -104,8 +108,8 @@ mod tests {
         for (input_num, expected_str, expected_decimal, description) in cases {
             let decimal  = Decimal::from_str(input_num).unwrap();
 
-            assert_eq!(decimal, expected_decimal, "\x1b[31mFailed in '{description}' case\x1b[0m");
-            assert_eq!(format!("{decimal}"), expected_str, "\x1b[31mFailed in '{description}' case\x1b[0m");
+            assert_eq!(decimal, expected_decimal, "{}", failed_template(description));
+            assert_eq!(format!("{decimal}"), expected_str, "{}", failed_template(description));
         }
     }
 
@@ -127,7 +131,7 @@ mod tests {
         ];
 
         for (left, rigth, expected, description) in cases {
-            assert_eq!(left + rigth, expected, "\x1b[31mFailed in '{description}' case\x1b[0m");
+            assert_eq!(left + rigth, expected, "{}", failed_template(description));
         }
     }
 }
