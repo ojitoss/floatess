@@ -77,7 +77,16 @@ impl<'a> std::str::FromStr for Decimal<'a> {
     }
 }
 
-// impl<'a> Decimal<'a> {}
+impl Decimal<'_> {
+    pub fn new(pre: u32, post: &[u8]) -> Self {
+        let post = Vec::from(post);
+
+        Self {
+            pre,
+            post: Box::leak(post.into_iter().rev().collect::<Vec<u8>>().into_boxed_slice())
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -92,15 +101,15 @@ mod tests {
     fn from_str() {
         let cases = [
             (
-                "1.45", "1.45", Decimal { pre: 1, post: &[5, 4] }, 
+                "1.45", "1.45", Decimal::new(1, &[4, 5]), 
                 "Regular parse"
             ),
             (
-                "1.", "1.0", Decimal { pre: 1, post: &[] }, 
+                "1.", "1.0", Decimal::new(1, &[]), 
                 "Without post dot digit autocompleter"
             ),
             (
-                "1", "1.0", Decimal { pre: 1, post: &[]  }, 
+                "1", "1.0", Decimal::new(1, &[]), 
                 "Whitout none decimal part"
             )
         ];
@@ -117,15 +126,15 @@ mod tests {
     fn add() {
         let cases = [
             (
-                Decimal { pre: 2, post: &[4, 4] }, 
-                Decimal { pre: 1, post: &[4, 4] }, 
-                Decimal { pre: 3, post: &[8, 8] },
+                Decimal::new(2, &[4, 4]),
+                Decimal::new(1, &[4, 4]),
+                Decimal::new(3, &[8, 8]),
                 "Standar sum (formatted is: 2.44 + 1.44 = 3.88)"
             ),
             (
-                Decimal { pre: 2, post: &[5, 5] }, 
-                Decimal { pre: 1, post: &[5, 4] }, 
-                Decimal { pre: 4, post: &[0, 0] },
+                Decimal::new(2, &[5, 5]),
+                Decimal::new(1, &[4, 5]),
+                Decimal::new(4, &[0, 0]),
                 "Check carry (formatted is: 2.55 + 1.45 = 4.00)"
             )
         ];
