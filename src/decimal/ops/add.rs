@@ -14,7 +14,7 @@ impl<'a> Add for Decimal<'a> {
             let left = self.post[i];
             let right = rhs.post[i];
 
-            let sum = left + right + if add_one_next { 1 } else { 0 };
+            let sum = left + right + add_one_next as u8;
             let low_ten = sum < 10;
             let to_push = if low_ten { sum } else { sum - 10 };
 
@@ -27,7 +27,7 @@ impl<'a> Add for Decimal<'a> {
         }
 
         Self { 
-            pre: self.pre + rhs.pre + if add_one_next { 1 } else { 0 },
+            pre: self.pre + rhs.pre + add_one_next as u32,
             post: Box::leak(res.into_boxed_slice())
          }
     }
