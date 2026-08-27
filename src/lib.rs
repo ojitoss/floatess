@@ -127,4 +127,24 @@ mod tests {
             assert_eq!(format!("{decimal}"), expected_str);
         }
     }
+
+    #[test]
+    fn add() {
+        let cases = [
+            (
+                Decimal { pre: 2, post: &[4, 4] }, 
+                Decimal { pre: 1, post: &[4, 4] }, 
+                Decimal { pre: 3, post: &[8, 8] }
+            ),
+            (
+                Decimal { pre: 2, post: &[5, 5] }, 
+                Decimal { pre: 1, post: &[5, 4] }, 
+                Decimal { pre: 4, post: &[0, 0] }
+            )
+        ];
+
+        for (left, rigth, expected) in cases {
+            assert_eq!(left + rigth, expected);
+        }
+    }
 }
