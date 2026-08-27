@@ -87,16 +87,25 @@ mod tests {
     #[test]
     fn from_str() {
         let cases = [
-            ("1.45", "1.45", Decimal { pre: 1, post: &[5, 4] }),
-            ("1.", "1.0", Decimal { pre: 1, post: &[] }),
-            ("1", "1.0", Decimal { pre: 1, post: &[]  })
+            (
+                "1.45", "1.45", Decimal { pre: 1, post: &[5, 4] }, 
+                "Regular parse"
+            ),
+            (
+                "1.", "1.0", Decimal { pre: 1, post: &[] }, 
+                "Without post dot digit autocompleter"
+            ),
+            (
+                "1", "1.0", Decimal { pre: 1, post: &[]  }, 
+                "Whitout none decimal part"
+            )
         ];
 
-        for (input_num, expected_str, expected_decimal) in cases {
+        for (input_num, expected_str, expected_decimal, description) in cases {
             let decimal  = Decimal::from_str(input_num).unwrap();
 
-            assert_eq!(decimal, expected_decimal);
-            assert_eq!(format!("{decimal}"), expected_str);
+            assert_eq!(decimal, expected_decimal, "\x1b[31mFailed in '{description}' case\x1b[0m");
+            assert_eq!(format!("{decimal}"), expected_str, "\x1b[31mFailed in '{description}' case\x1b[0m");
         }
     }
 
@@ -106,17 +115,19 @@ mod tests {
             (
                 Decimal { pre: 2, post: &[4, 4] }, 
                 Decimal { pre: 1, post: &[4, 4] }, 
-                Decimal { pre: 3, post: &[8, 8] }
+                Decimal { pre: 3, post: &[8, 8] },
+                "Standar sum (formatted is: 2.44 + 1.44 = 3.88)"
             ),
             (
                 Decimal { pre: 2, post: &[5, 5] }, 
                 Decimal { pre: 1, post: &[5, 4] }, 
-                Decimal { pre: 4, post: &[0, 0] }
+                Decimal { pre: 4, post: &[0, 0] },
+                "Check carry (formatted is: 2.55 + 1.45 = 4.00)"
             )
         ];
 
-        for (left, rigth, expected) in cases {
-            assert_eq!(left + rigth, expected);
+        for (left, rigth, expected, description) in cases {
+            assert_eq!(left + rigth, expected, "\x1b[31mFailed in '{description}' case\x1b[0m");
         }
     }
 }
