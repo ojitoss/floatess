@@ -79,7 +79,7 @@ impl<'a> Decimal<'a> {
         for ch in string.chars() {
             let ch_u8 = ch as u8;
 
-            if (ch_u8 < b'0' || ch_u8 > b'9') && ch_u8 != b'.' {
+            if !ch_u8.is_ascii_digit() && ch_u8 != b'.' {
                 panic!("{}", format!("'{ch}' is not valid digit"))
             }
 
