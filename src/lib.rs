@@ -77,15 +77,13 @@ impl<'a> Decimal<'a> {
         let mut state = State::Pre;
 
         for ch in string.chars() {
-            let ch_u8 = ch as u8;
-
-            if !ch_u8.is_ascii_digit() && ch_u8 != b'.' {
+            if !ch.is_ascii_digit() && ch != '.' {
                 panic!("{}", format!("'{ch}' is not valid digit"))
             }
 
             match state {
                 State::Pre => {
-                    if ch_u8 == b'.' {
+                    if ch == '.' {
                         state = State::Post;
 
                         continue;
@@ -94,7 +92,7 @@ impl<'a> Decimal<'a> {
                     pre.push(ch);
                 }
                 State::Post => {
-                    if ch_u8 == b'.' {
+                    if ch == '.' {
                         panic!("insert more than one '.'")
                     }
 
