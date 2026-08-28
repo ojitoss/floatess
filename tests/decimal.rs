@@ -66,7 +66,19 @@ fn add() {
             Decimal::new(1, &[4, 5]),
             Decimal::new(4, &[0, 0]),
             "Check carry (formatted is: 2.55 + 1.45 = 4.00)"
-        )
+        ),
+        (
+            Decimal::new(2, &[5, 5, 6, 6, 8]),
+            Decimal::new(1, &[4, 5]),
+            Decimal::new(4, &[0, 0, 6, 6, 8]),
+            "Lhs with more len than Rhs (formatted is: 2.55668 + 1.45 = 4.00668)"
+        ),
+        (
+            Decimal::new(1, &[4, 5]),
+            Decimal::new(2, &[5, 5, 6, 6, 8]),
+            Decimal::new(4, &[0, 0, 6, 6, 8]),
+            "Rhs with more len than Lhs (formatted is: 1.45 + 2.55668 = 4.00668)"
+        ),
     ];
 
     for (left, rigth, expected, description) in cases {
