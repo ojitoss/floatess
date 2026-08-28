@@ -38,7 +38,7 @@ impl<'a> Add for Decimal<'a> {
 
             loop {
                 poped = res.pop().unwrap();
-                if res.len() == 0 || poped != 0 { break; }
+                if res.is_empty() || poped != 0 { break; }
             }
 
             if poped != 0 { res.push(poped); }
