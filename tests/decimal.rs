@@ -7,45 +7,67 @@ fn failed_template(s: &str) -> String {
 
 #[test]
 fn from_str() {
-    let cases: [(&str, Option<&str>, Result<Decimal, DecimalFromStrErr>, &str); 5] = [
+    struct Case<'a> {
+        input: &'a str,
+        expected_str: Option<&'a str>,
+        expected_decimal: Result<Decimal<'a>, DecimalFromStrErr>,
+        desc: &'a str
+    }
+
+    let cases = [
         (
-            "1.45", Some("1.45"), 
-            Ok(Decimal::new(1, &[4, 5])), 
-            "Regular parse"
+            Case {
+                input: "1.45", 
+                expected_str: Some("1.45"), 
+                expected_decimal: Ok(Decimal::new(1, &[4, 5])), 
+                desc: "Regular parse"
+            }
         ),
         (
-            "1.", Some("1.0"), 
-            Ok(Decimal::new(1, &[])), 
-            "Without post dot digit autocompleter"
+            Case {
+                input: "1.",
+                expected_str: Some("1.0"), 
+                expected_decimal: Ok(Decimal::new(1, &[])), 
+                desc: "Without post dot digit autocompleter"
+            }
         ),
         (
-            "1", Some("1.0"), 
-            Ok(Decimal::new(1, &[])), 
-            "Whitout none decimal part"
+            Case {
+                input: "1",
+                expected_str: Some("1.0"), 
+                expected_decimal: Ok(Decimal::new(1, &[])), 
+                desc: "Whitout none decimal part"
+            }
         ),
         (
-            "bad", None,
-            Err(DecimalFromStrErr::InvalidDigit),
-            "Invalid digit"
+            Case {
+                input: "bad", 
+                expected_str: None,
+                expected_decimal: Err(DecimalFromStrErr::InvalidDigit),
+                desc: "Invalid digit"
+            }
         ),
         (
-            "12..4", None,
-            Err(DecimalFromStrErr::InvalidDoubledDot),
-            "Invalid doubled dot"
+            Case {
+                input: "12..4",
+                expected_str: None,
+                expected_decimal: Err(DecimalFromStrErr::InvalidDoubledDot),
+                desc: "Invalid doubled dot"
+            }
         )
     ];
 
-    for (input_num, expected_str, expected_decimal, description) in cases {
-        let decimal  = Decimal::from_str(input_num);
+    for Case { input, expected_str, expected_decimal, desc } in cases {
+        let decimal  = Decimal::from_str(input);
 
         match decimal {
             Ok(decimal) => {
-                assert_eq!(decimal, expected_decimal.unwrap(), "{}", failed_template(description));
-                assert_eq!(format!("{decimal}"), expected_str.unwrap(), "{}", failed_template(description));
+                assert_eq!(decimal, expected_decimal.unwrap(), "{}", failed_template(desc));
+                assert_eq!(format!("{decimal}"), expected_str.unwrap(), "{}", failed_template(desc));
             },
             Err(err_expected) => {
                 if let Err(err) = decimal {
-                    assert_eq!(err, err_expected, "{}", failed_template(description));
+                    assert_eq!(err, err_expected, "{}", failed_template(desc));
                 }
             }
         }
