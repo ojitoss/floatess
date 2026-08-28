@@ -76,34 +76,49 @@ fn from_str() {
 
 #[test]
 fn add() {
+    struct Case<'a> {
+        lhs: Decimal<'a>,
+        rhs: Decimal<'a>,
+        expected: Decimal<'a>,
+        desc: &'a str
+    }
+
     let cases = [
         (
-            Decimal::new(2, &[4, 4]),
-            Decimal::new(1, &[4, 4]),
-            Decimal::new(3, &[8, 8]),
-            "Standar sum (formatted is: 2.44 + 1.44 = 3.88)"
+            Case {
+                lhs: Decimal::new(2, &[4, 4]),
+                rhs: Decimal::new(1, &[4, 4]),
+                expected: Decimal::new(3, &[8, 8]),
+                desc: "Standar sum (formatted is: 2.44 + 1.44 = 3.88)"
+            }
         ),
         (
-            Decimal::new(2, &[5, 5]),
-            Decimal::new(1, &[4, 5]),
-            Decimal::new(4, &[]),
-            "Check carry (formatted is: 2.55 + 1.45 = 4.00)"
+            Case { 
+                lhs: Decimal::new(2, &[5, 5]),
+                rhs: Decimal::new(1, &[4, 5]),
+                expected: Decimal::new(4, &[]),
+                desc: "Check carry (formatted is: 2.55 + 1.45 = 4.00)"
+            }
         ),
         (
-            Decimal::new(2, &[5, 5, 6, 6, 8]),
-            Decimal::new(1, &[4, 5]),
-            Decimal::new(4, &[0, 0, 6, 6, 8]),
-            "Lhs with more len than Rhs (formatted is: 2.55668 + 1.45 = 4.00668)"
+            Case {
+                lhs: Decimal::new(2, &[5, 5, 6, 6, 8]),
+                rhs: Decimal::new(1, &[4, 5]),
+                expected: Decimal::new(4, &[0, 0, 6, 6, 8]),
+                desc: "Lhs with more len than Rhs (formatted is: 2.55668 + 1.45 = 4.00668)"
+            }
         ),
         (
-            Decimal::new(1, &[4, 5]),
-            Decimal::new(2, &[5, 5, 6, 6, 8]),
-            Decimal::new(4, &[0, 0, 6, 6, 8]),
-            "Rhs with more len than Lhs (formatted is: 1.45 + 2.55668 = 4.00668)"
+            Case {
+                lhs: Decimal::new(1, &[4, 5]),
+                rhs: Decimal::new(2, &[5, 5, 6, 6, 8]),
+                expected: Decimal::new(4, &[0, 0, 6, 6, 8]),
+                desc: "Rhs with more len than Lhs (formatted is: 1.45 + 2.55668 = 4.00668)"
+            }
         ),
     ];
 
-    for (left, rigth, expected, description) in cases {
-        assert_eq!(left + rigth, expected, "{}", failed_template(description));
+    for Case { lhs, rhs, expected, desc } in cases {
+        assert_eq!(lhs + rhs, expected, "{}", failed_template(desc));
     }
 }
