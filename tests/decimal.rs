@@ -7,7 +7,7 @@ fn failed_template(s: &str) -> String {
 
 #[test]
 fn from_str() {
-    let cases: [(&str, Option<&str>, Result<Decimal, DecimalFromStrErr>, &str); 3] = [
+    let cases: [(&str, Option<&str>, Result<Decimal, DecimalFromStrErr>, &str); 5] = [
         (
             "1.45", Some("1.45"), 
             Ok(Decimal::new(1, &[4, 5])), 
@@ -22,6 +22,16 @@ fn from_str() {
             "1", Some("1.0"), 
             Ok(Decimal::new(1, &[])), 
             "Whitout none decimal part"
+        ),
+        (
+            "bad", None,
+            Err(DecimalFromStrErr::InvalidDigit),
+            "Invalid digit"
+        ),
+        (
+            "12..4", None,
+            Err(DecimalFromStrErr::InvalidDoubledDot),
+            "Invalid doubled dot"
         )
     ];
 
