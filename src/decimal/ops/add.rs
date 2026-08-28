@@ -14,11 +14,9 @@ impl<'a> Add for Decimal<'a> {
             let right = rhs.post.get(i);
 
             if left.is_none() || right.is_none() {
-                if right.is_none() {
-                    res.push(*left.unwrap());
-                } else {
-                    res.push(*right.unwrap());
-                }
+                let value = if right.is_none() { *left.unwrap() } else { *right.unwrap() };
+
+                res.push(value);
 
                 continue;
             }
