@@ -14,9 +14,9 @@ impl<'a> Add for Decimal<'a> {
             let right = rhs.post.get(i);
 
             if left.is_none() || right.is_none() {
-                let value = if right.is_none() { *left.unwrap() } else { *right.unwrap() };
+                let value = if right.is_none() { left } else { right }.unwrap();
 
-                res[i] = value;
+                res[i] = *value;
 
                 continue;
             }
