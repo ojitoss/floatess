@@ -1,9 +1,8 @@
+mod tools;
+
 use std::str::FromStr;
 use floatess::{Decimal, decimal::DecimalFromStrErr};
-
-fn failed_template(s: &str) -> String {
-    format!("\x1b[31mFailed in '{s}' case\x1b[0m")
-}
+use tools::{failed_template};
 
 #[test]
 fn from_str() {
