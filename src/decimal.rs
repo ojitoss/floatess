@@ -12,20 +12,17 @@ impl std::fmt::Display for Decimal<'_> {
 
         let post = if len > 0 {
             let mut stack = String::new();
-            let mut i = len - 1;
 
-            loop {
-                // usize can't be lower than zero, so this had the same function than had a 'i < 0' but using an overflow
-                if i == usize::MAX { break };
-    
+            for i in 0..len {
                 let part = self.post[i];
-    
+
                 stack.push_str(&part.to_string());
-                i = i.wrapping_sub(1);
             }
 
             stack
-        } else { "0".to_string() };
+        } else { 
+            "0".to_string() 
+        };
 
         write!(f, "{}.{}", self.pre, post)
     }
@@ -78,7 +75,7 @@ impl<'a> std::str::FromStr for Decimal<'a> {
         
         Ok(Self { 
             pre: pre.parse().unwrap(),
-            post: Box::leak(post.into_iter().rev().collect::<Vec<u8>>().into_boxed_slice())
+            post: Box::leak(post.into_iter().collect::<Vec<u8>>().into_boxed_slice())
         })
     }
 }
@@ -89,7 +86,7 @@ impl Decimal<'_> {
 
         Self {
             pre,
-            post: Box::leak(post.into_iter().rev().collect::<Vec<u8>>().into_boxed_slice())
+            post: Box::leak(post.into_iter().collect::<Vec<u8>>().into_boxed_slice())
         }
     }
 }

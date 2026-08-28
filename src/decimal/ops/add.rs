@@ -7,10 +7,9 @@ impl<'a> Add for Decimal<'a> {
     fn add(self, rhs: Self) -> Self::Output {
         let mut add_one_next = false;
         let self_len = self.post.len();
-        let self_len_minus_one = self_len - 1;
         let mut res = Vec::<u8>::with_capacity(self_len);
 
-        for i in 0..self_len {
+        for i in (0..self_len).rev() {
             let left = self.post[i];
             let right = rhs.post[i];
 
@@ -20,15 +19,12 @@ impl<'a> Add for Decimal<'a> {
 
             res.push(to_push);
 
-            // to keep the last sum to 'pre' prop
-            if i < self_len_minus_one {
-                add_one_next = !low_ten;
-            }
+            add_one_next = !low_ten;
         }
 
         Self { 
             pre: self.pre + rhs.pre + add_one_next as u32,
-            post: Box::leak(res.into_boxed_slice())
+            post: Box::leak(res.into_iter().rev().collect::<Vec<u8>>().into_boxed_slice())
          }
     }
 }
