@@ -31,8 +31,14 @@ impl std::fmt::Display for Decimal<'_> {
     }
 }
 
+#[derive(Debug)]
+pub enum DecimalFromStrErr {
+    InvalidDigit,
+    InvalidDoubledDot
+}
+
 impl<'a> std::str::FromStr for Decimal<'a> {
-    type Err = ();
+    type Err = DecimalFromStrErr;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut pre = String::new();
@@ -47,7 +53,7 @@ impl<'a> std::str::FromStr for Decimal<'a> {
         
         for ch in s.chars() {
             if !ch.is_ascii_digit() && ch != '.' {
-                panic!("{}", format!("'{ch}' is not valid digit"))
+                Err(DecimalFromStrErr::InvalidDigit)?
             }
         
             match state {
@@ -62,7 +68,7 @@ impl<'a> std::str::FromStr for Decimal<'a> {
                 }
                 State::Post => {
                     if ch == '.' {
-                        panic!("insert more than one '.'")
+                        Err(DecimalFromStrErr::InvalidDoubledDot)?
                     }
         
                     post.push(ch.to_string().parse().unwrap());
