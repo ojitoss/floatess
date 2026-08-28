@@ -28,7 +28,7 @@ impl<'a> Add for Decimal<'a> {
 
             let sum = left + right + add_one_next as u8;
             let low_ten = sum < 10;
-            let to_push = if low_ten { sum } else { sum - 10 };
+            let to_push = sum - (10 * (!low_ten as u8));
 
             res.push(to_push);
 
