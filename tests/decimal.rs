@@ -64,7 +64,7 @@ fn add() {
         (
             Decimal::new(2, &[5, 5]),
             Decimal::new(1, &[4, 5]),
-            Decimal::new(4, &[0, 0]),
+            Decimal::new(4, &[]),
             "Check carry (formatted is: 2.55 + 1.45 = 4.00)"
         ),
         (

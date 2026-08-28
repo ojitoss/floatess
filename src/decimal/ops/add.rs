@@ -33,6 +33,17 @@ impl<'a> Add for Decimal<'a> {
             add_one_next = !low_ten;
         }
 
+        if *res.last().unwrap() == 0 {
+            let mut poped;
+
+            loop {
+                poped = res.pop().unwrap();
+                if res.len() == 0 || poped != 0 { break; }
+            }
+
+            if poped != 0 { res.push(poped); }
+        }
+
         Self { 
             pre: self.pre + rhs.pre + add_one_next as u32,
             post: Box::leak(res.into_boxed_slice())
