@@ -6,7 +6,7 @@ pub trait DigitStorage {
 
 impl DigitStorage for [u8] {
     fn len_digits(&self) -> usize {
-        self.len() as usize
+        self.len()
     }
 
     fn get_digit(&self, index: usize) -> Option<usize> {
@@ -32,5 +32,27 @@ impl DigitStorage for u8 {
         let n = 10u8.pow((len - 1 - index) as u32);
 
         Some(((*self / n) % 10) as usize)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn u8() {
+        let cases = [
+            (123u8, [1, 2, 3usize], 3usize)
+        ];
+
+        for (input, expected_digits, expected_len) in cases {
+            for i in 0..expected_digits.len() {
+                let expected_digit = expected_digits[i]; 
+
+                assert_eq!(input.get_digit(i).unwrap(), expected_digit)
+            }
+
+            assert_eq!(input.len_digits(), expected_len)
+        }
     }
 }
