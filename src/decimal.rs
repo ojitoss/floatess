@@ -31,7 +31,7 @@ impl std::fmt::Display for Decimal<'_> {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum DecimalFromStrErr {
     InvalidDigit,
     InvalidDoubledDot

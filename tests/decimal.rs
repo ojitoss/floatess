@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use floatess::Decimal;
+use floatess::{Decimal, decimal::DecimalFromStrErr};
 
 fn failed_template(s: &str) -> String {
     format!("\x1b[31mFailed in '{s}' case\x1b[0m")
@@ -7,26 +7,38 @@ fn failed_template(s: &str) -> String {
 
 #[test]
 fn from_str() {
-    let cases = [
+    let cases: [(&str, Option<&str>, Result<Decimal, DecimalFromStrErr>, &str); 3] = [
         (
-            "1.45", "1.45", Decimal::new(1, &[4, 5]), 
+            "1.45", Some("1.45"), 
+            Ok(Decimal::new(1, &[4, 5])), 
             "Regular parse"
         ),
         (
-            "1.", "1.0", Decimal::new(1, &[]), 
+            "1.", Some("1.0"), 
+            Ok(Decimal::new(1, &[])), 
             "Without post dot digit autocompleter"
         ),
         (
-            "1", "1.0", Decimal::new(1, &[]), 
+            "1", Some("1.0"), 
+            Ok(Decimal::new(1, &[])), 
             "Whitout none decimal part"
         )
     ];
 
     for (input_num, expected_str, expected_decimal, description) in cases {
-        let decimal  = Decimal::from_str(input_num).unwrap();
+        let decimal  = Decimal::from_str(input_num);
 
-        assert_eq!(decimal, expected_decimal, "{}", failed_template(description));
-        assert_eq!(format!("{decimal}"), expected_str, "{}", failed_template(description));
+        match decimal {
+            Ok(decimal) => {
+                assert_eq!(decimal, expected_decimal.unwrap(), "{}", failed_template(description));
+                assert_eq!(format!("{decimal}"), expected_str.unwrap(), "{}", failed_template(description));
+            },
+            Err(err_expected) => {
+                if let Err(err) = decimal {
+                    assert_eq!(err, err_expected, "{}", failed_template(description));
+                }
+            }
+        }
     }
 }
 
