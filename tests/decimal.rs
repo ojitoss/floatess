@@ -9,7 +9,7 @@ fn from_str() {
     struct Case<'a> {
         input: &'a str,
         expected_str: Option<&'a str>,
-        expected_decimal: Result<Decimal<'a>, DecimalFromStrErr>,
+        expected_decimal: Result<Decimal<&'a [u8]>, DecimalFromStrErr>,
         desc: &'a str
     }
 
@@ -76,9 +76,9 @@ fn from_str() {
 #[test]
 fn add() {
     struct Case<'a> {
-        lhs: Decimal<'a>,
-        rhs: Decimal<'a>,
-        expected: Decimal<'a>,
+        lhs: Decimal<&'a [u8]>,
+        rhs: Decimal<&'a [u8]>,
+        expected: Decimal<&'a [u8]>,
         desc: &'a str
     }
 

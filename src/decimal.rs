@@ -1,20 +1,22 @@
 pub mod ops;
 
+use crate::digit_storage::DigitStorage;
+
 #[derive(Debug, PartialEq, Eq)]
-pub struct Decimal<'a> {
+pub struct Decimal<T> {
     pub pre: u32,
-    pub post: &'a [u8]
+    pub post: T
 }
 
-impl std::fmt::Display for Decimal<'_> {
+impl<'a> std::fmt::Display for Decimal<&'a [u8]> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let len = self.post.len();
+        let len = self.post.len_digits();
 
         let post = if len > 0 {
             let mut stack = String::new();
 
             for i in 0..len {
-                let part = self.post[i];
+                let part = self.post.get_digit(i).unwrap();
 
                 stack.push_str(&part.to_string());
             }
@@ -34,7 +36,7 @@ pub enum DecimalFromStrErr {
     InvalidDoubledDot
 }
 
-impl std::str::FromStr for Decimal<'_> {
+impl<'a> std::str::FromStr for Decimal<&'a [u8]> {
     type Err = DecimalFromStrErr;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -75,13 +77,13 @@ impl std::str::FromStr for Decimal<'_> {
         
         Ok(Self { 
             pre: pre.parse().unwrap(),
-            post: Box::leak(post.into_iter().collect::<Vec<u8>>().into_boxed_slice())
+            post: Box::leak(post.into_boxed_slice())
         })
     }
 }
 
-impl Decimal<'_> {
-    pub fn new(pre: u32, post: &[u8]) -> Self {
+impl<'a> Decimal<&'a [u8]> {
+    pub fn new<'b>(pre: u32, post: &'b [u8]) -> Self {
         let post = Vec::from(post);
 
         Self {

@@ -1,10 +1,16 @@
 pub trait DigitStorage {
+    type FromSlice<'a> where Self: 'a; 
+
     fn len_digits(&self) -> usize;
 
     fn get_digit(&self, index: usize) -> Option<usize>;
+
+    fn from_slice<'a>(slice: &'a [u8]) -> Self::FromSlice<'a>;
 }
 
 impl DigitStorage for [u8] {
+    type FromSlice<'a> = &'a [u8];
+
     fn len_digits(&self) -> usize {
         self.len()
     }
@@ -15,9 +21,15 @@ impl DigitStorage for [u8] {
             None => None
         }
     }
+
+    fn from_slice<'a>(slice: &'a [u8]) -> Self::FromSlice<'a> {
+        slice
+    }
 }
 
 impl DigitStorage for u8 {
+    type FromSlice<'a> = Self;
+
     fn len_digits(&self) -> usize {
         if *self == 0 { return 0 };
 
@@ -32,6 +44,16 @@ impl DigitStorage for u8 {
         let n = 10u8.pow((len - 1 - index) as u32);
 
         Some(((*self / n) % 10) as usize)
+    }
+
+    fn from_slice(slice: &[u8]) -> Self {
+        let mut string = String::with_capacity(slice.len());
+
+        for digit in slice {
+            string.push_str(&digit.to_string());
+        }
+
+        string.parse::<u8>().unwrap()
     }
 }
 
