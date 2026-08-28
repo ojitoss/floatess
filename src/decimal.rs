@@ -34,7 +34,7 @@ pub enum DecimalFromStrErr {
     InvalidDoubledDot
 }
 
-impl<'a> std::str::FromStr for Decimal<'a> {
+impl std::str::FromStr for Decimal<'_> {
     type Err = DecimalFromStrErr;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
