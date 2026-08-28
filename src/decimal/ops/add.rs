@@ -6,12 +6,25 @@ impl<'a> Add for Decimal<'a> {
 
     fn add(self, rhs: Self) -> Self::Output {
         let mut add_one_next = false;
-        let self_len = self.post.len();
-        let mut res = Vec::<u8>::with_capacity(self_len);
+        let max_len = usize::max(self.post.len(), rhs.post.len());
+        let mut res = Vec::<u8>::with_capacity(max_len);
 
-        for i in (0..self_len).rev() {
-            let left = self.post[i];
-            let right = rhs.post[i];
+        for i in (0..max_len).rev() {
+            let left = self.post.get(i);
+            let right = rhs.post.get(i);
+
+            if left.is_none() || right.is_none() {
+                if right.is_none() {
+                    res.push(*left.unwrap());
+                } else {
+                    res.push(*right.unwrap());
+                }
+
+                continue;
+            }
+
+            let left = left.unwrap();
+            let right = right.unwrap();
 
             let sum = left + right + add_one_next as u8;
             let low_ten = sum < 10;
