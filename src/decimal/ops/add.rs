@@ -1,8 +1,8 @@
 use core::ops::Add;
 use crate::{Decimal, digit_storage::DigitStorage};
 
-impl<'a> Add for Decimal<&'a [u8]> {
-    type Output = Decimal<&'a [u8]>;
+impl<T: DigitStorage> Add for Decimal<T> {
+    type Output = Decimal<T>;
 
     fn add(self, rhs: Self) -> Self::Output {
         let mut add_one_next = false;
@@ -46,7 +46,7 @@ impl<'a> Add for Decimal<&'a [u8]> {
 
         Self { 
             pre: self.pre + rhs.pre + add_one_next as u32,
-            post: Box::leak(res.into_boxed_slice())
+            post: T::from_slice(&res)
          }
     }
 }
