@@ -25,40 +25,51 @@ impl DigitStorage for &[u8] {
     }
 }
 
-impl DigitStorage for u8 {
-    fn len_digits(&self) -> usize {
-        if *self == 0 { return 0 };
+macro_rules! impl_ints {
+    ($( $type:ty );* $(;)? ) => {
+        $(
+            impl DigitStorage for $type {
+                fn len_digits(&self) -> usize {
+                    if *self == 0 { return 0 };
 
-        self.ilog10() as usize + 1
-    }
+                    self.ilog10() as usize + 1
+                }
 
-    fn get_digit(&self, index: usize) -> Option<usize> {
-        let len = self.len_digits();
+                fn get_digit(&self, index: usize) -> Option<usize> {
+                    let len = self.len_digits();
 
-        if index > len { None? }
+                    if index > len { None? }
 
-        let n = 10u8.pow((len - 1 - index) as u32);
+                    let n = (10 as $type).pow((len - 1 - index) as u32);
 
-        Some(((*self / n) % 10) as usize)
-    }
+                    Some(((*self / n) % 10) as usize)
+                }
 
-    fn from_slice(slice: &[u8]) -> Self {
-        let mut string = String::with_capacity(slice.len());
+                fn from_slice(slice: &[u8]) -> Self {
+                    let mut string = String::with_capacity(slice.len());
 
-        for digit in slice {
-            string.push_str(&digit.to_string());
-        }
+                    for digit in slice {
+                        string.push_str(&digit.to_string());
+                    }
 
-        string.parse::<u8>().unwrap()
-    }
+                    string.parse::<$type>().unwrap()
+                }
+            }
+        )*
+    };
 }
+
+impl_ints!(
+    u8; u16; u32; u64; u128; usize;
+    i8; i16; i32; i64; i128; isize
+);
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn u8() {
+    fn int() {
         let cases = [
             (123u8, [1, 2, 3usize], 3usize)
         ];
