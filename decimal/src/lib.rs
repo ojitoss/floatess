@@ -1,6 +1,6 @@
 pub mod ops;
 
-use floatess::digit_storage::DigitStorage;
+use floatess::DigitStorage;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Decimal<T> {

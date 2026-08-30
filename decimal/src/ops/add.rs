@@ -1,5 +1,5 @@
 use core::ops::Add;
-use floatess::digit_storage::DigitStorage;
+use floatess::DigitStorage;
 use crate::{Decimal};
 
 impl<T: DigitStorage> Add for Decimal<T> {
