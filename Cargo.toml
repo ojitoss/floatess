@@ -6,4 +6,8 @@ members = [
     "examples",
     "tests"
 ]
-default-members = ["core"]
+default-members = [
+    "core",
+    "decimal",
+    "tests"
+]
