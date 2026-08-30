@@ -77,6 +77,14 @@ impl_ints!(
     i8; i16; i32; i64; i128; isize
 );
 
+impl DigitStorage for () {
+    fn len_digits(&self) -> usize { 0 }
+
+    fn get_digit(&self, _index: usize) -> Option<usize> { None }
+
+    fn from_slice(_slice: &[u8]) -> Self {}
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
