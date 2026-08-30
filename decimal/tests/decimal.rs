@@ -1,6 +1,6 @@
 use std::str::FromStr;
 use floatess_decimal::{Decimal, DecimalFromStrErr};
-use tests::failed_template;
+use tests_tools::failed_template;
 
 #[test]
 fn from_str() {

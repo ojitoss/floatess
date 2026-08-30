@@ -4,10 +4,9 @@ members = [
     "core",
     "decimal",
     "examples",
-    "tests"
+    "tests-tools"
 ]
 default-members = [
     "core",
     "decimal",
-    "tests"
 ]

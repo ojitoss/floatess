@@ -5,3 +5,4 @@ edition = "2024"
 
 [dependencies]
 floatess = { path = "../core" }
+tests-tools = { path = "../tests-tools" }
