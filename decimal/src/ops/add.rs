@@ -2,10 +2,14 @@ use core::ops::Add;
 use floatess::DigitStorage;
 use crate::{Decimal};
 
-impl<T: DigitStorage> Add for Decimal<T> {
-    type Output = Decimal<T>;
+impl<T, S> Add<Decimal<S>> for Decimal<T>
+where 
+    T: DigitStorage,
+    S: DigitStorage 
+{
+    type Output = Self;
 
-    fn add(self, rhs: Self) -> Self::Output {
+    fn add(self, rhs: Decimal<S>) -> Self::Output {
         let mut add_one_next = false;
         let max_len = usize::max(self.post.len_digits(), rhs.post.len_digits());
         let mut res = vec![0; max_len];
