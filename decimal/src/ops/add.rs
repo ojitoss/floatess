@@ -1,5 +1,6 @@
 use core::ops::Add;
-use crate::{Decimal, digit_storage::DigitStorage};
+use floatess::digit_storage::DigitStorage;
+use crate::{Decimal};
 
 impl<T: DigitStorage> Add for Decimal<T> {
     type Output = Decimal<T>;

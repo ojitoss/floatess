@@ -1,0 +1,14 @@
+[package]
+name = "examples"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[dependencies]
+floatess = { path = "../core" }
+floatess-decimal = { path = "../decimal" }
+
+[[example]]
+name = "some"
+path = "some.rs"

@@ -1,6 +1,6 @@
 pub mod ops;
 
-use crate::digit_storage::DigitStorage;
+use floatess::digit_storage::DigitStorage;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Decimal<T> {
