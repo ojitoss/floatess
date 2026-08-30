@@ -51,7 +51,7 @@ macro_rules! impl_ints {
                 fn get_digit(&self, index: usize) -> Option<usize> {
                     let len = self.len_digits();
 
-                    if index > len { None? }
+                    if index >= len { None? }
 
                     let n = (10 as $type).pow((len - 1 - index) as u32);
 
