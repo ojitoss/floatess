@@ -1,6 +1,6 @@
 use std::str::FromStr;
 use floatess_decimal::{Decimal, DecimalFromStrErr};
-use tests_tools::failed_template;
+use tests_tools::{failed_template, CaseOp};
 
 #[test]
 fn from_str() {
@@ -73,16 +73,10 @@ fn from_str() {
 
 #[test]
 fn add() {
-    struct Case<'a> {
-        lhs: Decimal<&'a [u8]>,
-        rhs: Decimal<&'a [u8]>,
-        expected: Decimal<&'a [u8]>,
-        desc: &'a str
-    }
-
+    type DecU8Sl<'a> = Decimal<&'a [u8]>;
     let cases = [
         (
-            Case {
+            CaseOp::<DecU8Sl, DecU8Sl, DecU8Sl> {
                 lhs: Decimal::new(2, &[4, 4]),
                 rhs: Decimal::new(1, &[4, 4]),
                 expected: Decimal::new(3, &[8, 8]),
@@ -90,7 +84,7 @@ fn add() {
             }
         ),
         (
-            Case { 
+            CaseOp::<DecU8Sl, DecU8Sl, DecU8Sl> { 
                 lhs: Decimal::new(2, &[5, 5]),
                 rhs: Decimal::new(1, &[4, 5]),
                 expected: Decimal::new(4, &[]),
@@ -98,7 +92,7 @@ fn add() {
             }
         ),
         (
-            Case {
+            CaseOp::<DecU8Sl, DecU8Sl, DecU8Sl> {
                 lhs: Decimal::new(2, &[5, 5, 6, 6, 8]),
                 rhs: Decimal::new(1, &[4, 5]),
                 expected: Decimal::new(4, &[0, 0, 6, 6, 8]),
@@ -106,7 +100,7 @@ fn add() {
             }
         ),
         (
-            Case {
+            CaseOp::<DecU8Sl, DecU8Sl, DecU8Sl> {
                 lhs: Decimal::new(1, &[4, 5]),
                 rhs: Decimal::new(2, &[5, 5, 6, 6, 8]),
                 expected: Decimal::new(4, &[0, 0, 6, 6, 8]),
@@ -115,7 +109,7 @@ fn add() {
         ),
     ];
 
-    for Case { lhs, rhs, expected, desc } in cases {
-        assert_eq!(lhs + rhs, expected, "{}", failed_template(desc));
+    for case in cases {
+        case.add();
     }
 }
