@@ -1,5 +1,4 @@
 use std::str::FromStr;
-use floatess::DigitStorage;
 use floatess_decimal::{Decimal, DecimalFromStrErr};
 use tests_tools::{failed_template, CaseOp};
 
@@ -104,7 +103,7 @@ fn add() {
             CaseOp::<DecU8Sl, DecU8Sl, DecU8Sl> {
                 lhs: Decimal::new(1, &[4, 5]),
                 rhs: Decimal::new(2, &[5, 5, 6, 6, 8]),
-                expected: Decimal::new(4, &[0, 0, 6, 6, 8]),
+                expected: Decimal::new(4, &[0, 0, 6, 6, 7]),
                 desc: "Rhs with more len than Lhs"
             }
         ),
@@ -123,10 +122,10 @@ fn add() {
 
             let digits_max = usize::max(
                 usize::max(
-                    lhs.pre.len_digits(), 
-                    rhs.pre.len_digits()
+                    lhs.amount_int_digits(), 
+                    rhs.amount_int_digits()
                 ),
-                exp.pre.len_digits()
+                exp.amount_int_digits()
             );
 
             let pad = "-".repeat(digits_max + decimal_max + 1);
