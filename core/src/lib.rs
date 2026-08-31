@@ -72,7 +72,7 @@ macro_rules! impl_ints {
     };
 }
 
-impl_ints!(u8; u16; u32; u64; u128; usize);
+impl_ints!(u8; u16; u32; u64; u128);
 
 impl DigitStorage for () {
     fn len_digits(&self) -> usize { 0 }
