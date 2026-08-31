@@ -80,7 +80,7 @@ fn add() {
                 lhs: Decimal::new(2, &[4, 4]),
                 rhs: Decimal::new(1, &[4, 4]),
                 expected: Decimal::new(3, &[8, 8]),
-                desc: "Standar sum (formatted is: 2.44 + 1.44 = 3.88)"
+                desc: "Standar sum"
             }
         ),
         (
@@ -88,7 +88,7 @@ fn add() {
                 lhs: Decimal::new(2, &[5, 5]),
                 rhs: Decimal::new(1, &[4, 5]),
                 expected: Decimal::new(4, &[]),
-                desc: "Check carry (formatted is: 2.55 + 1.45 = 4.00)"
+                desc: "Check carry"
             }
         ),
         (
@@ -96,7 +96,7 @@ fn add() {
                 lhs: Decimal::new(2, &[5, 5, 6, 6, 8]),
                 rhs: Decimal::new(1, &[4, 5]),
                 expected: Decimal::new(4, &[0, 0, 6, 6, 8]),
-                desc: "Lhs with more len than Rhs (formatted is: 2.55668 + 1.45 = 4.00668)"
+                desc: "Lhs with more len than Rhs"
             }
         ),
         (
@@ -104,12 +104,24 @@ fn add() {
                 lhs: Decimal::new(1, &[4, 5]),
                 rhs: Decimal::new(2, &[5, 5, 6, 6, 8]),
                 expected: Decimal::new(4, &[0, 0, 6, 6, 8]),
-                desc: "Rhs with more len than Lhs (formatted is: 1.45 + 2.55668 = 4.00668)"
+                desc: "Rhs with more len than Lhs"
             }
         ),
     ];
 
     for case in cases {
-        case.add();
+        case.add(| lhs, rhs, exp, desc |  {
+            let mut res_desc = String::new();
+
+            res_desc += format!(
+                "{desc}
+                    {lhs}
+                    {rhs}
+                    -----
+                    {exp}
+            ").as_str();
+
+            res_desc
+        });
     }
 }
