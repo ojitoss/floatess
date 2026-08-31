@@ -19,9 +19,7 @@ impl DigitStorage for &[u8] {
     }
     
     fn from_slice(slice: &[u8]) -> Self {
-        let slice = Vec::from(slice).into_iter()
-            .map(| x | x as u8)
-            .collect::<Vec<u8>>();
+        let slice = Vec::from(slice);
             
             Box::leak(slice.into_boxed_slice())
     }
