@@ -93,4 +93,8 @@ impl<T: DigitStorage> Decimal<T> {
     pub fn amount_decimal_digits(&self) -> usize {
         self.post.len_digits()
     }
+
+    pub fn amount_int_digits(&self) -> usize {
+        self.pre.len_digits()
+    }
 }
