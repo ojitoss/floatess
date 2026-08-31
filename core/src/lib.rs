@@ -59,13 +59,13 @@ macro_rules! impl_ints {
                 }
 
                 fn from_slice(slice: &[u8]) -> Self {
-                    let mut string = String::with_capacity(slice.len());
+                    let mut res = 0;
 
                     for digit in slice {
-                        string.push_str(&digit.to_string());
+                        res += *digit as $type;
                     }
-
-                    string.parse::<$type>().unwrap()
+                    
+                    res
                 }
             }
         )*
