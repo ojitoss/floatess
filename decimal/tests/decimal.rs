@@ -1,4 +1,5 @@
 use std::str::FromStr;
+use floatess::DigitStorage;
 use floatess_decimal::{Decimal, DecimalFromStrErr};
 use tests_tools::{failed_template, CaseOp};
 
@@ -112,12 +113,29 @@ fn add() {
     for case in cases {
         case.add(| lhs, rhs, exp, desc |  {
             let mut res_desc = String::new();
+            let decimal_max = usize::max(
+                usize::max(
+                    lhs.amount_decimal_digits(), 
+                    rhs.amount_decimal_digits()
+                ),
+                exp.amount_decimal_digits()
+            );
+
+            let digits_max = usize::max(
+                usize::max(
+                    lhs.pre.len_digits(), 
+                    rhs.pre.len_digits()
+                ),
+                exp.pre.len_digits()
+            );
+
+            let pad = "-".repeat(digits_max + decimal_max + 1);
 
             res_desc += format!(
                 "{desc}
                     {lhs}
                     {rhs}
-                    -----
+                    {pad}
                     {exp}
             ").as_str();
 
