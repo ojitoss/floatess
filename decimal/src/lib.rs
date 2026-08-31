@@ -89,4 +89,8 @@ impl<T: DigitStorage> Decimal<T> {
             post
         }
     }
+
+    pub fn amount_decimal_digits(&self) -> usize {
+        self.post.len_digits()
+    }
 }
