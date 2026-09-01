@@ -1,5 +1,5 @@
 pub mod impl_unsiged;
-mod impl_basics;
+pub mod impl_basics;
 
 pub trait DigitStorage {
     fn len_digits(&self) -> usize;

@@ -1,4 +1,5 @@
 use std::str::FromStr;
+use floatess::impl_basics::BasicDecimalStream;
 use floatess_decimal::{Decimal, DecimalFromStrErr};
 use tests_tools::{failed_template, CaseOp};
 
@@ -7,7 +8,7 @@ fn from_str() {
     struct Case<'a> {
         input: &'a str,
         expected_str: Option<&'a str>,
-        expected_decimal: Result<Decimal<&'a [u8]>, DecimalFromStrErr>,
+        expected_decimal: Result<Decimal<BasicDecimalStream<'a>>, DecimalFromStrErr>,
         desc: &'a str
     }
 
@@ -16,7 +17,7 @@ fn from_str() {
             Case {
                 input: "1.45", 
                 expected_str: Some("1.45"), 
-                expected_decimal: Ok(Decimal::new(1, &[4, 5])), 
+                expected_decimal: Ok(Decimal::new(1, BasicDecimalStream(&[4, 5]))), 
                 desc: "Regular parse"
             }
         ),
@@ -24,7 +25,7 @@ fn from_str() {
             Case {
                 input: "1.",
                 expected_str: Some("1.0"), 
-                expected_decimal: Ok(Decimal::new(1, &[])), 
+                expected_decimal: Ok(Decimal::new(1, BasicDecimalStream(&[]))), 
                 desc: "Without post dot digit autocompleter"
             }
         ),
@@ -32,7 +33,7 @@ fn from_str() {
             Case {
                 input: "1",
                 expected_str: Some("1.0"), 
-                expected_decimal: Ok(Decimal::new(1, &[])), 
+                expected_decimal: Ok(Decimal::new(1, BasicDecimalStream(&[]))), 
                 desc: "Whitout none decimal part"
             }
         ),
@@ -73,37 +74,37 @@ fn from_str() {
 
 #[test]
 fn add() {
-    type DecU8Sl<'a> = Decimal<&'a [u8]>;
+    type DecU8Sl<'a> = Decimal<BasicDecimalStream<'a>>;
     let cases = [
         (
             CaseOp::<DecU8Sl, DecU8Sl, DecU8Sl> {
-                lhs: Decimal::new(2, &[4, 4]),
-                rhs: Decimal::new(1, &[4, 4]),
-                expected: Decimal::new(3, &[8, 8]),
+                lhs: Decimal::new(2, BasicDecimalStream(&[4, 4])),
+                rhs: Decimal::new(1, BasicDecimalStream(&[4, 4])),
+                expected: Decimal::new(3, BasicDecimalStream(&[8, 8])),
                 desc: "Standar sum"
             }
         ),
         (
             CaseOp::<DecU8Sl, DecU8Sl, DecU8Sl> { 
-                lhs: Decimal::new(2, &[5, 5]),
-                rhs: Decimal::new(1, &[4, 5]),
-                expected: Decimal::new(4, &[]),
+                lhs: Decimal::new(2, BasicDecimalStream(&[5, 5])),
+                rhs: Decimal::new(1, BasicDecimalStream(&[4, 5])),
+                expected: Decimal::new(4, BasicDecimalStream(&[])),
                 desc: "Check carry"
             }
         ),
         (
             CaseOp::<DecU8Sl, DecU8Sl, DecU8Sl> {
-                lhs: Decimal::new(2, &[5, 5, 6, 6, 8]),
-                rhs: Decimal::new(1, &[4, 5]),
-                expected: Decimal::new(4, &[0, 0, 6, 6, 8]),
+                lhs: Decimal::new(2, BasicDecimalStream(&[5, 5, 6, 6, 8])),
+                rhs: Decimal::new(1, BasicDecimalStream(&[4, 5])),
+                expected: Decimal::new(4, BasicDecimalStream(&[0, 0, 6, 6, 8])),
                 desc: "Lhs with more len than Rhs"
             }
         ),
         (
             CaseOp::<DecU8Sl, DecU8Sl, DecU8Sl> {
-                lhs: Decimal::new(1, &[4, 5]),
-                rhs: Decimal::new(2, &[5, 5, 6, 6, 8]),
-                expected: Decimal::new(4, &[0, 0, 6, 6, 7]),
+                lhs: Decimal::new(1, BasicDecimalStream(&[4, 5])),
+                rhs: Decimal::new(2, BasicDecimalStream(&[5, 5, 6, 6, 8])),
+                expected: Decimal::new(4, BasicDecimalStream(&[0, 0, 6, 6, 8])),
                 desc: "Rhs with more len than Lhs"
             }
         ),
