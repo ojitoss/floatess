@@ -22,9 +22,13 @@ macro_rules! impl_ints {
 
                 fn from_slice(slice: &[u8]) -> Self {
                     let mut res = 0;
+                    let slice_len = slice.len();
 
-                    for digit in slice {
-                        res += *digit as $type;
+                    for i in 0..slice_len {
+                        let digit = slice[i];
+
+                        res *= 10;
+                        res += digit as $type;
                     }
                     
                     res
