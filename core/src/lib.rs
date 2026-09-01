@@ -8,3 +8,11 @@ pub trait DigitStorage {
 
     fn from_slice(slice: &[u8]) -> Self;
 }
+
+impl DigitStorage for () {
+    fn len_digits(&self) -> usize { 0 }
+
+    fn get_digit(&self, _index: usize) -> Option<usize> { None }
+
+    fn from_slice(_slice: &[u8]) -> Self {}
+}

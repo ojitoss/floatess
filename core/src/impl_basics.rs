@@ -18,11 +18,3 @@ impl DigitStorage for &[u8] {
             Box::leak(slice.into_boxed_slice())
     }
 }
-
-impl DigitStorage for () {
-    fn len_digits(&self) -> usize { 0 }
-
-    fn get_digit(&self, _index: usize) -> Option<usize> { None }
-
-    fn from_slice(_slice: &[u8]) -> Self {}
-}
