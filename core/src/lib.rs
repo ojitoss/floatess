@@ -1,4 +1,4 @@
-mod impl_unsiged;
+pub mod impl_unsiged;
 mod impl_basics;
 
 pub trait DigitStorage {

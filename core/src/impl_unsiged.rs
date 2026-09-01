@@ -1,23 +1,26 @@
 use crate::DigitStorage;
 
+pub struct SmallDigitStream<T>(pub T);
+
 macro_rules! impl_ints {
     ( $( $type:ty );* $(;)? ) => {
         $(
-            impl DigitStorage for $type {
+            impl DigitStorage for SmallDigitStream<$type> {
                 fn len_digits(&self) -> usize {
-                    if *self == 0 { return 0 };
+                    let val = self.0;
+                    if val == 0 { return 0 };
 
-                    self.ilog10() as usize + 1
+                    val.ilog10() as usize + 1
                 }
 
                 fn get_digit(&self, index: usize) -> Option<usize> {
                     let len = self.len_digits();
-
+ 
                     if index >= len { None? }
 
                     let n = (10 as $type).pow((len - 1 - index) as u32);
 
-                    Some(((*self / n) % 10) as usize)
+                    Some(((self.0 / n) % 10) as usize)
                 }
 
                 fn from_slice(slice: &[u8]) -> Self {
@@ -31,7 +34,7 @@ macro_rules! impl_ints {
                         res += digit as $type;
                     }
                     
-                    res
+                    Self(res)
                 }
             }
         )*
@@ -45,9 +48,12 @@ mod tests {
     use super::*;
 
     #[test]
+    fn amount_digits() {}
+
+    #[test]
     fn int() {
         let cases = [
-            (123u8, [1, 2, 3usize], 3usize)
+            (SmallDigitStream::<u8>(123), [1, 2, 3usize], 3usize)
         ];
 
         for (input, expected_digits, expected_len) in cases {

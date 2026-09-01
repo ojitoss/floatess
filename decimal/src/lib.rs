@@ -1,6 +1,7 @@
 pub mod ops;
 
 use floatess::DigitStorage;
+use floatess::impl_unsiged::SmallDigitStream;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Decimal<T> {
@@ -95,6 +96,6 @@ impl<T: DigitStorage> Decimal<T> {
     }
 
     pub fn amount_int_digits(&self) -> usize {
-        self.pre.len_digits()
+        SmallDigitStream(self.pre).len_digits()
     }
 }
