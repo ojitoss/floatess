@@ -1,9 +1,9 @@
 use crate::DigitStorage;
 
 #[derive(Debug, PartialEq)]
-pub struct BasicDecimalStream<'a>(pub &'a [u8]);
+pub struct BasicDigitsStream<'a>(pub &'a [u8]);
 
-impl<'a> DigitStorage for BasicDecimalStream<'a> {
+impl<'a> DigitStorage for BasicDigitsStream<'a> {
     fn len_digits(&self) -> usize {
         self.0.len()
     }
@@ -19,6 +19,6 @@ impl<'a> DigitStorage for BasicDecimalStream<'a> {
         let slice = Vec::from(slice);
         let owned_slice = Box::leak(slice.into_boxed_slice());
 
-        BasicDecimalStream(owned_slice)
+        BasicDigitsStream(owned_slice)
     }
 }
