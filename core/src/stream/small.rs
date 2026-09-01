@@ -1,11 +1,11 @@
 use crate::DigitStorage;
 
-pub struct SmallDigitStream<T>(pub T);
+pub struct SmallDigitsStream<T>(pub T);
 
 macro_rules! impl_ints {
     ( $( $type:ty );* $(;)? ) => {
         $(
-            impl DigitStorage for SmallDigitStream<$type> {
+            impl DigitStorage for SmallDigitsStream<$type> {
                 fn len_digits(&self) -> usize {
                     let val = self.0;
                     if val == 0 { return 0 };
@@ -53,7 +53,7 @@ mod tests {
     #[test]
     fn int() {
         let cases = [
-            (SmallDigitStream::<u8>(123), [1, 2, 3usize], 3usize)
+            (SmallDigitsStream::<u8>(123), [1, 2, 3usize], 3usize)
         ];
 
         for (input, expected_digits, expected_len) in cases {

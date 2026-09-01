@@ -1,5 +1,5 @@
 mod small;
 mod basic;
 
-pub use small::SmallDigitStream;
+pub use small::SmallDigitsStream;
 pub use basic::BasicDigitsStream;
