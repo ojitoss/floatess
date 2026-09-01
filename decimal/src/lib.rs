@@ -1,6 +1,6 @@
 pub mod ops;
 
-use floatess::{DigitStorage, stream::SmallDigitsStream};
+use floatess::{DigitStream, stream::SmallDigitsStream};
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Decimal<T> {
@@ -8,7 +8,7 @@ pub struct Decimal<T> {
     pub post: T
 }
 
-impl<T: DigitStorage> std::fmt::Display for Decimal<T> {
+impl<T: DigitStream> std::fmt::Display for Decimal<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let len = self.post.len_digits();
 
@@ -36,7 +36,7 @@ pub enum DecimalFromStrErr {
     InvalidDoubledDot
 }
 
-impl<T: DigitStorage> std::str::FromStr for Decimal<T> {
+impl<T: DigitStream> std::str::FromStr for Decimal<T> {
     type Err = DecimalFromStrErr;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -82,7 +82,7 @@ impl<T: DigitStorage> std::str::FromStr for Decimal<T> {
     }
 }
 
-impl<T: DigitStorage> Decimal<T> {
+impl<T: DigitStream> Decimal<T> {
     pub fn new(pre: u32, post: T) -> Self {
         Self {
             pre,

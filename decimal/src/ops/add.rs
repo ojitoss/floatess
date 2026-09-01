@@ -1,11 +1,11 @@
 use core::ops::Add;
-use floatess::DigitStorage;
+use floatess::DigitStream;
 use crate::{Decimal};
 
 impl<T, S> Add<Decimal<S>> for Decimal<T>
 where 
-    T: DigitStorage,
-    S: DigitStorage 
+    T: DigitStream,
+    S: DigitStream 
 {
     type Output = Self;
 

@@ -1,9 +1,9 @@
-use crate::DigitStorage;
+use crate::DigitStream;
 
 #[derive(Debug, PartialEq)]
 pub struct BasicDigitsStream<'a>(pub &'a [u8]);
 
-impl<'a> DigitStorage for BasicDigitsStream<'a> {
+impl<'a> DigitStream for BasicDigitsStream<'a> {
     fn len_digits(&self) -> usize {
         self.0.len()
     }
