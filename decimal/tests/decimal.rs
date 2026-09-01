@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use floatess::impl_basics::BasicDecimalStream;
+use floatess::{stream::BasicDecimalStream};
 use floatess_decimal::{Decimal, DecimalFromStrErr};
 use tests_tools::{failed_template, CaseOp};
 
