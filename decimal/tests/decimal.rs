@@ -112,25 +112,29 @@ fn add() {
 
     for case in cases {
         case.add(| lhs, rhs, exp, desc |  {
-            let lhs_stream = lhs.get_decimal_part_as_digits_stream();
-            let rhs_stream = rhs.get_decimal_part_as_digits_stream();
-            let exp_stream = exp.get_decimal_part_as_digits_stream();
+            let lhs_decimal_stream = lhs.get_decimal_part_as_digits_stream();
+            let rhs_decimal_stream = rhs.get_decimal_part_as_digits_stream();
+            let exp_decimal_stream = exp.get_decimal_part_as_digits_stream();
+
+            let lhs_int_stream = lhs.get_int_part_as_digits_stream();
+            let rhs_int_stream = rhs.get_int_part_as_digits_stream();
+            let exp_int_stream = exp.get_int_part_as_digits_stream();
 
             let mut res_desc = String::new();
             let decimal_max = usize::max(
                 usize::max(
-                    lhs_stream.len_digits(), 
-                    rhs_stream.len_digits()
+                    lhs_decimal_stream.len_digits(), 
+                    rhs_decimal_stream.len_digits()
                 ),
-                exp_stream.len_digits()
+                exp_decimal_stream.len_digits()
             );
 
             let digits_max = usize::max(
                 usize::max(
-                    lhs.amount_int_digits(), 
-                    rhs.amount_int_digits()
+                    lhs_int_stream.len_digits(), 
+                    rhs_int_stream.len_digits()
                 ),
-                exp.amount_int_digits()
+                exp_int_stream.len_digits()
             );
 
             let pad = "-".repeat(digits_max + decimal_max + 1);
