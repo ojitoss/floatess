@@ -19,7 +19,7 @@ where
     E: PartialEq + Debug
 {
     pub fn add<F>(self, callback: F) where F: Fn(&L, &R, &E, &str) -> String {
-        let desc = callback(&self.lhs, &self.rhs, &self.expected, &self.desc);
+        let desc = callback(&self.lhs, &self.rhs, &self.expected, self.desc);
 
         assert_eq!(self.lhs + self.rhs, self.expected, "{}", failed_template(&desc));
     }
