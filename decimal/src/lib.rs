@@ -102,8 +102,4 @@ impl<T: DigitsStream + Clone> Decimal<T> {
     pub fn get_int_part_as_digits_stream(&self) -> SmallDigitsStream<u32> {
         SmallDigitsStream(self.pre)
     }
-
-    pub fn amount_int_digits(&self) -> usize {
-        SmallDigitsStream(self.pre).len_digits()
-    }
 }
