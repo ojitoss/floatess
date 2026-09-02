@@ -22,19 +22,23 @@ macro_rules! impl_ints {
 
                     Some(((self.0 / n) % 10) as usize)
                 }
-
-                fn from_slice(slice: &[u8]) -> Self {
+            }
+            
+            impl TryFrom<&[u8]> for SmallDigitsStream<$type> {
+                type Error = ();
+                
+                fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
                     let mut res = 0;
-                    let slice_len = slice.len();
-
+                    let slice_len = value.len();
+        
                     for i in 0..slice_len {
-                        let digit = slice[i];
-
+                        let digit = value[i];
+        
                         res *= 10;
                         res += digit as $type;
                     }
                     
-                    Self(res)
+                    Ok(Self(res)) 
                 }
             }
         )*

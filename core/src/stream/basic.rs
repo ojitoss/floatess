@@ -14,11 +14,15 @@ impl<'a> DigitsStream for BasicDigitsStream<'a> {
             None => None
         }
     }
-    
-    fn from_slice(slice: &[u8]) -> Self {
-        let slice = Vec::from(slice);
-        let owned_slice = Box::leak(slice.into_boxed_slice());
+}
 
-        BasicDigitsStream(owned_slice)
+impl<'a> TryFrom<&[u8]> for BasicDigitsStream<'a> {
+    type Error = ();
+    
+    fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
+        let slice = Vec::from(value);
+        let owned_slice = Box::leak(slice.into_boxed_slice());
+        
+        Ok(BasicDigitsStream(owned_slice))
     }
 }

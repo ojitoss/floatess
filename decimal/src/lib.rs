@@ -1,5 +1,7 @@
 pub mod ops;
 
+use std::fmt::Debug;
+
 use floatess::{DigitsStream, stream::SmallDigitsStream};
 
 #[derive(Debug, PartialEq, Eq)]
@@ -36,7 +38,10 @@ pub enum DecimalFromStrErr {
     InvalidDoubledDot
 }
 
-impl<T: DigitsStream> std::str::FromStr for Decimal<T> {
+impl<'a, T: DigitsStream + TryFrom<&'a [u8]>> std::str::FromStr for Decimal<T> 
+where 
+    <T as TryFrom<&'a [u8]>>::Error: Debug 
+{
     type Err = DecimalFromStrErr;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -77,7 +82,7 @@ impl<T: DigitsStream> std::str::FromStr for Decimal<T> {
         
         Ok(Self { 
             pre: pre.parse().unwrap(),
-            post: T::from_slice(&post)
+            post: T::try_from(Box::leak(post.into_boxed_slice())).unwrap()
         })
     }
 }
