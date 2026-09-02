@@ -1,11 +1,11 @@
-use crate::DigitStream;
+use crate::DigitsStream;
 
 pub struct SmallDigitsStream<T>(pub T);
 
 macro_rules! impl_ints {
     ( $( $type:ty );* $(;)? ) => {
         $(
-            impl DigitStream for SmallDigitsStream<$type> {
+            impl DigitsStream for SmallDigitsStream<$type> {
                 fn len_digits(&self) -> usize {
                     let val = self.0;
                     if val == 0 { return 0 };

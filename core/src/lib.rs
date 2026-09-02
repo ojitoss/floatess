@@ -1,6 +1,6 @@
 pub mod stream;
 
-pub trait DigitStream {
+pub trait DigitsStream {
     fn len_digits(&self) -> usize;
 
     fn get_digit(&self, index: usize) -> Option<usize>;
@@ -8,7 +8,7 @@ pub trait DigitStream {
     fn from_slice(slice: &[u8]) -> Self;
 }
 
-impl DigitStream for () {
+impl DigitsStream for () {
     fn len_digits(&self) -> usize { 0 }
 
     fn get_digit(&self, _index: usize) -> Option<usize> { None }
