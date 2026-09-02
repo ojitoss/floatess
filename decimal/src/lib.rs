@@ -99,10 +99,6 @@ impl<T: DigitsStream + Clone> Decimal<T> {
         self.post.clone() 
     }
 
-    pub fn amount_decimal_digits(&self) -> usize {
-        self.post.len_digits()
-    }
-
     pub fn amount_int_digits(&self) -> usize {
         SmallDigitsStream(self.pre).len_digits()
     }
