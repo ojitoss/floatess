@@ -5,10 +5,10 @@ pub fn failed_template(s: &str) -> String {
     format!("\x1b[31mFailed in '{s}' case\x1b[0m")
 }
 
-pub struct CaseOp<'a, L, R, E> {
-    pub lhs: L,
-    pub rhs: R,
-    pub expected: E,
+pub struct CaseOp<'a, Lhs, Rhs, Exp> {
+    pub lhs: Lhs,
+    pub rhs: Rhs,
+    pub expected: Exp,
     pub desc: &'a str
 }
 
