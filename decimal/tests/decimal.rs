@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use floatess::{stream::BasicDigitsStream};
+use floatess::{DigitsStream, stream::BasicDigitsStream};
 use floatess_decimal::{Decimal, DecimalFromStrErr};
 use tests_tools::{failed_template, CaseOp};
 
@@ -112,13 +112,17 @@ fn add() {
 
     for case in cases {
         case.add(| lhs, rhs, exp, desc |  {
+            let lhs_stream = lhs.get_decimal_part_as_digits_stream();
+            let rhs_stream = rhs.get_decimal_part_as_digits_stream();
+            let exp_stream = exp.get_decimal_part_as_digits_stream();
+
             let mut res_desc = String::new();
             let decimal_max = usize::max(
                 usize::max(
-                    lhs.amount_decimal_digits(), 
-                    rhs.amount_decimal_digits()
+                    lhs_stream.len_digits(), 
+                    rhs_stream.len_digits()
                 ),
-                exp.amount_decimal_digits()
+                exp_stream.len_digits()
             );
 
             let digits_max = usize::max(

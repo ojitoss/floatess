@@ -1,6 +1,6 @@
 use crate::DigitsStream;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct BasicDigitsStream<'a>(pub &'a [u8]);
 
 impl<'a> DigitsStream for BasicDigitsStream<'a> {

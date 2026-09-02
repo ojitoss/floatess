@@ -87,12 +87,16 @@ where
     }
 }
 
-impl<T: DigitsStream> Decimal<T> {
+impl<T: DigitsStream + Clone> Decimal<T> {
     pub fn new(pre: u32, post: T) -> Self {
         Self {
             pre,
             post
         }
+    }
+
+    pub fn get_decimal_part_as_digits_stream(&self) -> T { 
+        self.post.clone() 
     }
 
     pub fn amount_decimal_digits(&self) -> usize {
