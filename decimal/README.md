@@ -24,8 +24,8 @@ use floatess::{stream::{SmallDigitsStream, BasicDigitsStream}};
 use floatess_decimal::{Decimal};
 
 fn main() {
-   let a = Decimal::new(10, SmallDigitStream::<u8>(255));
-   let b = Decimal::new(5, BasicDigitsStream(&[7, 5, 5]);
+   let a = Decimal::new(5, BasicDigitsStream(&[7, 5, 5]);
+   let b = Decimal::new(10, SmallDigitStream::<u8>(255));
 
    let res_a_b = a + b;
    let res_b_a = b + a;
