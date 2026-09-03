@@ -28,7 +28,7 @@ fn main() {
    let b = Decimal::new(5, BasicDigitsStream(&[7, 5, 5]);
    let r = (a + b).unwrap();
 
-   assert_eq!(format!("{a}", "10.255");
+   assert_eq!(format!("{a}"), "10.255");
    assert_eq!(format!("{b}"), "5.755");
    assert_eq!(format!("{r}"), "16.0");
    
