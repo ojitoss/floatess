@@ -28,6 +28,7 @@ fn main() {
    let b = Decimal::new(5, BasicDigitsStream(&[7, 5, 5]);
 
    let res_a_b = a + b;
+   let res_b_a = b + a;
 
    let r = res_a_b.unwrap();
 
