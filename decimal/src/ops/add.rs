@@ -1,6 +1,6 @@
 use core::ops::Add;
 use std::fmt::Debug;
-use floatess::DigitsStream;
+use floatess::{DigitsStream, stream::DigitsStreamUsable};
 use crate::{Decimal};
 
 impl<'a, T, S> Add<Decimal<S>> for Decimal<T>
@@ -13,12 +13,12 @@ where
 
     fn add(self, rhs: Decimal<S>) -> Self::Output  {
         let mut add_one_next = false;
-        let max_len = usize::max(self.post.len_digits(), rhs.post.len_digits());
+        let max_len = usize::max(self.post.0.len_digits(), rhs.post.0.len_digits());
         let mut res = vec![0; max_len];
 
         for i in (0..max_len).rev() {
-            let left = self.post.get_digit(i);
-            let right = rhs.post.get_digit(i);
+            let left = self.post.0.get_digit(i);
+            let right = rhs.post.0.get_digit(i);
 
             if left.is_none() || right.is_none() {
                 let value = if right.is_none() { left } else { right }.unwrap();
@@ -53,7 +53,7 @@ where
 
         Self { 
             pre: self.pre + rhs.pre + add_one_next as u32,
-            post: T::try_from(Box::leak(res.into_boxed_slice())).unwrap()
+            post: DigitsStreamUsable(T::try_from(Box::leak(res.into_boxed_slice())).unwrap())
          }
     }
 }

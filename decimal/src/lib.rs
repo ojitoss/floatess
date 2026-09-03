@@ -1,32 +1,18 @@
 pub mod ops;
 
-use std::fmt::Debug;
+use std::fmt::{Debug, Display};
 
-use floatess::{DigitsStream, stream::SmallDigitsStream};
+use floatess::{DigitsStream,  stream::{SmallDigitsStream, DigitsStreamUsable}};
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Decimal<T> {
     pub pre: u32,
-    pub post: T
+    pub post: DigitsStreamUsable<T>
 }
 
-impl<T: DigitsStream> std::fmt::Display for Decimal<T> {
+impl<T: DigitsStream> Display for Decimal<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let len = self.post.len_digits();
-
-        let post = if len > 0 {
-            let mut stack = String::new();
-
-            for i in 0..len {
-                let part = self.post.get_digit(i).unwrap();
-
-                stack.push_str(&part.to_string());
-            }
-
-            stack
-        } else { 
-            "0".to_string() 
-        };
+        let post = format!("{}", self.post);
 
         write!(f, "{}.{}", self.pre, post)
     }
@@ -82,7 +68,7 @@ where
         
         Ok(Self { 
             pre: pre.parse().unwrap(),
-            post: T::try_from(Box::leak(post.into_boxed_slice())).unwrap()
+            post: DigitsStreamUsable(T::try_from(Box::leak(post.into_boxed_slice())).unwrap())
         })
     }
 }
@@ -91,12 +77,12 @@ impl<T: DigitsStream + Clone> Decimal<T> {
     pub fn new(pre: u32, post: T) -> Self {
         Self {
             pre,
-            post
+            post: DigitsStreamUsable(post)
         }
     }
 
     pub fn get_decimal_part_as_digits_stream(&self) -> T { 
-        self.post.clone() 
+        self.post.0.clone() 
     }
 
     pub fn get_int_part_as_digits_stream(&self) -> SmallDigitsStream<u32> {
