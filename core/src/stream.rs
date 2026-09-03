@@ -1,7 +1,7 @@
 mod small;
 mod basic;
 
-use std::{fmt::Display};
+use std::fmt::{Debug, Display};
 
 pub use small::SmallDigitsStream;
 pub use basic::BasicDigitsStream;
@@ -12,7 +12,7 @@ pub trait DigitsStream {
     fn get_digit(&self, index: usize) -> Option<usize>;
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq)]
 pub struct DigitsStreamUsable<T>(pub T);
 
 impl<T: DigitsStream> Display for DigitsStreamUsable<T> {
@@ -34,6 +34,14 @@ impl<T: DigitsStream> Display for DigitsStreamUsable<T> {
         };
 
         write!(f, "{post}")
+    }
+}
+
+impl<T: DigitsStream + Debug> Debug for DigitsStreamUsable<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let x = format!("{}", self);
+
+        write!(f, "({:?} -> {})", self.0, x)
     }
 }
 
