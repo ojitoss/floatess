@@ -25,11 +25,11 @@ To conectly fully with this 'ecosistem', the structs than are consired digits st
 Algthout the lib allow make your own digits storages strategies, also contain a default ones (all of them are in the path ```floatess::stream```):
 
 ### Basic
-- *Struct firm: BasicDigitStream(&[u8])*
+*Struct firm: BasicDigitStream(&[u8])*  
 This is just a wrapper of &[u8] than can implement std traits requeriment to can be considered as a digit storage strategy without orphan rules problemos of impl DigitsStream directly of &[u8].
 
 ### Small
-- *Struct firm: SmallDigitsStream<T>(T)*
+*Struct firm: SmallDigitsStream<T>(T)*  
 This is a just wrapper of all (ONLY UNSGINED) ints, maybe seems like a storage with limit amount of range could be not really safe, and yes, this is not safe at all for two reasons:
 
 - **Range limits**: example u8 is for 0..255, so the max digit in this stream is 255, more cause overflow.
@@ -38,6 +38,6 @@ This is a just wrapper of all (ONLY UNSGINED) ints, maybe seems like a storage w
 So if is unsafe why you use it? The main reason is to represent low digits streams or with expected limit, example in a struct than represent a decimal, the int part usually not need to be virtually infinity, or even the decimal part can be use it for example to a digits castead to X limit of digits but whit no any problem of IFEE exactitly.
 
 ### Whitout
-- *Struct firm: WithoutDigitsStream*
+*Struct firm: WithoutDigitsStream*    
 This is just a wrapper of Unit type,than had the main function (and limitation) to had NO STORAGE, can not represent any digits stream, always had 0 len and digit acces is None.
 So why use it? it's mainly for a struct than was based in digits stream, no every time you want than actually had a value, this allow it without had space in memory, instead of use the len 0 or always None representation on other storages, example on decimal struct, not always need save if had a periodic stream, or if only impprt to you the decimal part and not the int to operate bettwen others decimals structs.
