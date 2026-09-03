@@ -1,5 +1,6 @@
 use crate::DigitsStream;
 
+#[derive(Debug, Clone, Copy)]
 pub struct SmallDigitsStream<T>(pub T);
 
 macro_rules! impl_ints {
