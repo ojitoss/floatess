@@ -4,7 +4,7 @@ use std::fmt::{Debug, Display};
 
 use floatess::{DigitsStream,  stream::{SmallDigitsStream, DigitsStreamUsable}};
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(PartialEq, Eq)]
 pub struct Decimal<T> {
     pub pre: u32,
     pub post: DigitsStreamUsable<T>
@@ -15,6 +15,12 @@ impl<T: DigitsStream> Display for Decimal<T> {
         let post = format!("{}", self.post);
 
         write!(f, "{}.{}", self.pre, post)
+    }
+}
+
+impl<T: DigitsStream + Debug> Debug for Decimal<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Decimal [ pre: {:?}, post: {:?} ]", self.pre, self.post)
     }
 }
 
