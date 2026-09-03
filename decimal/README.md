@@ -26,11 +26,11 @@ use floatess_decimal::{Decimal};
 fn main() {
    let a = Decimal::new(10, SmallDigitStream::<u8>(255));
    let b = Decimal::new(5, BasicDigitsStream(&[7, 5, 5]);
-   let res = (a + b).unwrap();
+   let r = (a + b).unwrap();
 
    assert_eq(format!("{a}", "10.255");
    assert_eq(format!("{b}"), "5.755");
-   assert_eq(format!("{res}"), "16.0");
+   assert_eq(format!("{r}"), "16.0");
    
 }
 ```
