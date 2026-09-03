@@ -35,5 +35,8 @@ fn main() {
    assert_eq!(format!("{a}"), "10.255");
    assert_eq!(format!("{b}"),  "5.755");
    assert_eq!(format!("{r}"), "16.01");
+
+   assert_eq!(res_a_b, Ok(Decimal::new(16, BasicDigitsStream(&[0, 1]))));
+   assert_eq!(res_b_a, Err(()));
 }
 ```
