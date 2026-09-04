@@ -53,22 +53,23 @@ mod tests {
     use super::*;
 
     #[test]
-    fn amount_digits() {}
+    fn amount_digits() {
+        assert_eq!(SmallDigitsStream(0u8).len_digits(), 0);
+        assert_eq!(SmallDigitsStream(123u8).len_digits(), 3);
+    }
 
     #[test]
     fn int() {
         let cases = [
-            (SmallDigitsStream::<u8>(123), [1, 2, 3usize], 3usize)
+            (SmallDigitsStream::<u8>(123), [1, 2, 3usize])
         ];
 
-        for (input, expected_digits, expected_len) in cases {
+        for (input, expected_digits) in cases {
             for i in 0..expected_digits.len() {
                 let expected_digit = expected_digits[i]; 
 
                 assert_eq!(input.get_digit(i).unwrap(), expected_digit)
             }
-
-            assert_eq!(input.len_digits(), expected_len)
         }
     }
 }
