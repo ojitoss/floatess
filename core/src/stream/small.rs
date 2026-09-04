@@ -1,6 +1,6 @@
 use crate::DigitsStream;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SmallDigitsStream<T>(pub T);
 
 macro_rules! impl_ints {
@@ -56,6 +56,12 @@ mod tests {
     fn amount_digits() {
         assert_eq!(SmallDigitsStream(0u8).len_digits(), 0);
         assert_eq!(SmallDigitsStream(123u8).len_digits(), 3);
+    }
+
+    #[test]
+    fn from_slice() {
+        assert_eq!(SmallDigitsStream::try_from(*&[0, 0, 0, 1].as_slice()), Ok(SmallDigitsStream::<u32>(1)));
+        assert_eq!(SmallDigitsStream::try_from(*&[1, 0, 0, 0].as_slice()), Ok(SmallDigitsStream::<u32>(1000)));
     }
 
     #[test]
