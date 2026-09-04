@@ -8,7 +8,7 @@ pub enum SmallDigitsStreamError {
     HighThanNine { index: usize }
 }
 
-macro_rules! impl_ints {
+macro_rules! impl_unsigned {
     ( $( $type:ty );* $(;)? ) => {
         $(
             impl DigitsStream for SmallDigitsStream<$type> {
@@ -55,7 +55,7 @@ macro_rules! impl_ints {
     };
 }
 
-impl_ints!(u8; u16; u32; u64; u128);
+impl_unsigned!(u8; u16; u32; u64; u128);
 
 #[cfg(test)]
 mod tests {
