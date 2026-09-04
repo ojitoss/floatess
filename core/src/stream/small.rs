@@ -62,6 +62,7 @@ mod tests {
     fn from_slice() {
         assert_eq!(SmallDigitsStream::try_from(*&[0, 0, 0, 1].as_slice()), Ok(SmallDigitsStream::<u32>(1)));
         assert_eq!(SmallDigitsStream::try_from(*&[1, 0, 0, 0].as_slice()), Ok(SmallDigitsStream::<u32>(1000)));
+        assert_eq!(SmallDigitsStream::try_from(*&[1, 2, 3].as_slice()), Ok(SmallDigitsStream::<u32>(123)));
     }
 
     #[test]
