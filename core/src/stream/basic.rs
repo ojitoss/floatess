@@ -43,7 +43,7 @@ impl<'a> TryFrom<&[u8]> for BasicDigitsStream<'a> {
 
 #[cfg(test)]
 mod tests {
-    use crate::stream::{BasicDigitsStream, basic::ErrSome};
+    use super::*;
 
     #[test]
     fn erros() {
