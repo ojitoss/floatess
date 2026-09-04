@@ -18,7 +18,7 @@ impl<'a> DigitsStream for BasicDigitsStream<'a> {
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum ErrSome {
-    HighThanNine
+    HighThanNine { index: usize }
 }
 
 impl<'a> TryFrom<&[u8]> for BasicDigitsStream<'a> {
@@ -27,9 +27,11 @@ impl<'a> TryFrom<&[u8]> for BasicDigitsStream<'a> {
     fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
         let slice = Vec::from(value);
 
-        for digit in &slice {
-            if *digit > 9 {
-                Err(ErrSome::HighThanNine)?
+        for i in 0..slice.len() {
+            let digit = slice[i];
+
+            if digit > 9 {
+                Err(ErrSome::HighThanNine { index: i })?
             }
         }
 
@@ -45,6 +47,6 @@ mod tests {
 
     #[test]
     fn erros() {
-        assert_eq!(BasicDigitsStream::try_from(*&[1, 2, 3, 10].as_slice()), Err(ErrSome::HighThanNine));
+        assert_eq!(BasicDigitsStream::try_from(*&[1, 2, 3, 10].as_slice()), Err(ErrSome::HighThanNine { index: 3 }));
     }
 }
