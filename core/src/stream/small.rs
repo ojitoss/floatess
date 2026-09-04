@@ -3,6 +3,11 @@ use crate::DigitsStream;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SmallDigitsStream<T>(pub T);
 
+#[derive(Debug, PartialEq, Eq)]
+pub enum SmallDigitsStreamError {
+    HighThanNine { index: usize }
+}
+
 macro_rules! impl_ints {
     ( $( $type:ty );* $(;)? ) => {
         $(
@@ -26,7 +31,7 @@ macro_rules! impl_ints {
             }
             
             impl TryFrom<&[u8]> for SmallDigitsStream<$type> {
-                type Error = ();
+                type Error = SmallDigitsStreamError;
                 
                 fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
                     let mut res = 0;
@@ -34,6 +39,10 @@ macro_rules! impl_ints {
         
                     for i in 0..slice_len {
                         let digit = value[i];
+
+                        if digit > 9 {
+                            Err(SmallDigitsStreamError::HighThanNine { index: i })?
+                        }
         
                         res *= 10;
                         res += digit as $type;
