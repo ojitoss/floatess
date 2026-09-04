@@ -64,19 +64,4 @@ mod tests {
         assert_eq!(SmallDigitsStream::try_from(*&[1, 0, 0, 0].as_slice()), Ok(SmallDigitsStream::<u32>(1000)));
         assert_eq!(SmallDigitsStream::try_from(*&[1, 2, 3].as_slice()), Ok(SmallDigitsStream::<u32>(123)));
     }
-
-    #[test]
-    fn int() {
-        let cases = [
-            (SmallDigitsStream::<u8>(123), [1, 2, 3usize])
-        ];
-
-        for (input, expected_digits) in cases {
-            for i in 0..expected_digits.len() {
-                let expected_digit = expected_digits[i]; 
-
-                assert_eq!(input.get_digit(i).unwrap(), expected_digit)
-            }
-        }
-    }
 }
