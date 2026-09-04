@@ -16,13 +16,25 @@ impl<'a> DigitsStream for BasicDigitsStream<'a> {
     }
 }
 
+#[derive(Debug)]
+pub enum ErrSome {
+    HighThanNine
+}
+
 impl<'a> TryFrom<&[u8]> for BasicDigitsStream<'a> {
-    type Error = ();
+    type Error = ErrSome;
     
     fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
         let slice = Vec::from(value);
+
+        for digit in &slice {
+            if *digit > 9 {
+                Err(ErrSome::HighThanNine)?
+            }
+        }
+
         let owned_slice = Box::leak(slice.into_boxed_slice());
-        
+
         Ok(BasicDigitsStream(owned_slice))
     }
 }
