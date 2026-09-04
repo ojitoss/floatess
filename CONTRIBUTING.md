@@ -37,3 +37,11 @@ git push -u origin feature/[name]
 2. Open a Pull Request in the **main** branch.
 3. Link your Pull Request to releated issue.
 4. Wait the manteiner review and i'm Best scenario, accept Pull Request, if not, i give you a feedback of why was rejected.
+
+### Commits structure 
+This repository is based in *Convencional Commits*, but about this specific repo, also had many *scopes* based in depth (like *feat(x/y/z)*), in this depth had the next ones:
+- **README**: This is when change a [README.md file](./README.md), used to doucment why is this project as a general description.
+
+- **Cargo.toml**: This is when change a [Cargo.toml file](./Cargo.toml), used to change config of the workspaces.
+
+- **CONTRIBUTING**: This is when change a [CONTRIBUTING.md file](./CONTRIBUTING.md), used to indicate the guide of contributing.
