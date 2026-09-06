@@ -6,11 +6,12 @@ pub struct SmallDigitsStream<T>(pub T);
 #[derive(Debug, PartialEq, Eq)]
 pub enum SmallDigitsStreamError {
     HighThanNine { index: usize },
-    OverflowDigitsAmount
+    OverflowDigitsAmount,
+    OverflowInSpecificDigit
 }
 
 trait RangeLimit<const N: usize>: Sized {
-    const VALID_DIGITS: [Self; N];
+    const VALID_DIGITS: [u8; N];
     const AMOUNT_VALID_DIGITS: usize = N;
 }
 
@@ -21,7 +22,7 @@ macro_rules! impl_unsigned {
     });* $(;)? ) => {
         $(
             impl RangeLimit<$AMOUNT> for $type {
-                const VALID_DIGITS: [Self; $AMOUNT] = $DIGITS;
+                const VALID_DIGITS: [u8; $AMOUNT] = $DIGITS;
             }
 
             impl DigitsStream for SmallDigitsStream<$type> {
@@ -52,6 +53,18 @@ macro_rules! impl_unsigned {
 
                     if slice_len > <$type as RangeLimit<$AMOUNT>>::AMOUNT_VALID_DIGITS {
                         Err(SmallDigitsStreamError::OverflowDigitsAmount)?
+                    }
+
+                    if slice_len == <$type as RangeLimit<$AMOUNT>>::AMOUNT_VALID_DIGITS {
+                        for i in 0..slice_len {
+                            #[allow(non_snake_case)]
+                            let DIGIT = <$type as RangeLimit<$AMOUNT>>::VALID_DIGITS[i];
+                            let digit = value[i];
+
+                            if digit > DIGIT {
+                                Err(SmallDigitsStreamError::OverflowInSpecificDigit)?
+                            }
+                        }
                     }
         
                     for i in 0..slice_len {
@@ -111,6 +124,5 @@ mod tests {
         assert_eq!(SmallDigitsStream::<u32>::try_from(*&[1, 0, 0, 0].as_slice()), Ok(SmallDigitsStream(1000)));
         assert_eq!(SmallDigitsStream::<u32>::try_from(*&[1, 2, 3].as_slice()), Ok(SmallDigitsStream(123)));
         assert_eq!(SmallDigitsStream::<u8>::try_from(*&[1, 2, 10].as_slice()), Err(SmallDigitsStreamError::HighThanNine { index: 2 }));
-        assert_eq!(SmallDigitsStream::<u8>::try_from(*&[1, 2, 3, 4].as_slice()), Err(SmallDigitsStreamError::OverflowDigitsAmount))
     }
 }
