@@ -8,9 +8,21 @@ pub enum SmallDigitsStreamError {
     HighThanNine { index: usize }
 }
 
+trait RangeLimit<const N: usize>: Sized {
+    const VALID_DIGITS: [Self; N];
+    const AMOUNT_VALID_DIGITS: usize = N;
+}
+
 macro_rules! impl_unsigned {
-    ( $( $type:ty );* $(;)? ) => {
+    ( $( $type:ty => { 
+        DIGITS => $DIGITS:expr,
+        AMOUNT => $AMOUNT:literal 
+    });* $(;)? ) => {
         $(
+            impl RangeLimit<$AMOUNT> for $type {
+                const VALID_DIGITS: [Self; $AMOUNT] = $DIGITS;
+            }
+
             impl DigitsStream for SmallDigitsStream<$type> {
                 fn len_digits(&self) -> usize {
                     let val = self.0;
@@ -55,7 +67,28 @@ macro_rules! impl_unsigned {
     };
 }
 
-impl_unsigned!(u8; u16; u32; u64; u128);
+impl_unsigned!(
+    u8 => {
+        DIGITS => [2,5,5],
+        AMOUNT => 3
+    }; 
+    u16 => {
+        DIGITS => [6,5,5,3,5],
+        AMOUNT => 5
+    }; 
+    u32 => {
+        DIGITS => [4,2,9,4,9,6,7,2,9,5],
+        AMOUNT => 10
+    }; 
+    u64 => {
+        DIGITS => [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,5],
+        AMOUNT => 20
+    }; 
+    u128 => {
+        DIGITS => [3,4,0,2,8,2,3,6,6,9,2,0,9,3,8,4,6,3,4,6,3,3,7,4,6,0,7,4,3,1,7,6,8,2,1,1,4,5,5],
+        AMOUNT => 39
+    }
+);
 
 #[cfg(test)]
 mod tests {
