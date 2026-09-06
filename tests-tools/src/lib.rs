@@ -5,6 +5,18 @@ pub fn failed_template(s: &str) -> String {
     format!("\x1b[31mFailed in '{s}' case\x1b[0m")
 }
 
+#[macro_export]
+macro_rules! assert_eq_from_slice {
+    ($strategy:ty; $( $slice:expr; == $expected:expr ),*) => {
+        $(
+            assert_eq!(
+                <$strategy as TryFrom<&[u8]>>::try_from(*&$slice.as_slice()), 
+                $expected
+            );
+        )*
+    };
+}
+
 pub struct CaseOp<'a, Lhs, Rhs, Exp> {
     pub lhs: Lhs,
     pub rhs: Rhs,

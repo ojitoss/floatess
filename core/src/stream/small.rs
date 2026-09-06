@@ -1,4 +1,5 @@
 use crate::DigitsStream;
+use tests_tools::assert_eq_from_slice;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SmallDigitsStream<T>(pub T);

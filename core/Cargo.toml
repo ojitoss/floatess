@@ -5,3 +5,4 @@ edition = "2024"
 license = "MIT"
 
 [dependencies]
+tests-tools = { path = "../tests-tools" }
