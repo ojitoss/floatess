@@ -1,5 +1,4 @@
 use crate::DigitsStream;
-use tests_tools::assert_eq_from_slice;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SmallDigitsStream<T>(pub T);
@@ -113,6 +112,7 @@ impl_unsigned!(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use tests_tools::assert_eq_from_slice;
 
     #[test]
     fn amount_digits() {
@@ -122,13 +122,17 @@ mod tests {
 
     #[test]
     fn from_slice() {
-        assert_eq!(SmallDigitsStream::<u32>::try_from(*&[0, 0, 0, 1].as_slice()), Ok(SmallDigitsStream(1)));
-        assert_eq!(SmallDigitsStream::<u32>::try_from(*&[1, 0, 0, 0].as_slice()), Ok(SmallDigitsStream(1000)));
-        assert_eq!(SmallDigitsStream::<u32>::try_from(*&[1, 2, 3].as_slice()), Ok(SmallDigitsStream(123)));
-        assert_eq!(SmallDigitsStream::<u32>::try_from(*&[1, 2, 10].as_slice()), Err(SmallDigitsStreamError::HighThanNine { index: 2 }));
-        assert_eq!(SmallDigitsStream::<u8>::try_from(*&[1, 2, 3, 4].as_slice()), Err(SmallDigitsStreamError::OverflowDigitsAmount));
-        assert_eq!(SmallDigitsStream::<u8>::try_from(*&[3, 5, 5].as_slice()), Err(SmallDigitsStreamError::OverflowInSpecificDigit));
-        assert_eq!(SmallDigitsStream::<u8>::try_from(*&[2, 6, 5].as_slice()), Err(SmallDigitsStreamError::OverflowInSpecificDigit));
-        assert_eq!(SmallDigitsStream::<u8>::try_from(*&[2, 5, 6].as_slice()), Err(SmallDigitsStreamError::OverflowInSpecificDigit));
+        assert_eq_from_slice!(SmallDigitsStream<u32>; 
+            [0, 0, 0, 1]; == Ok(SmallDigitsStream(1)),
+            [1, 0, 0, 0]; == Ok(SmallDigitsStream(1000)),
+            [1, 2, 3]; == Ok(SmallDigitsStream(123)),
+            [1, 2, 10]; == Err(SmallDigitsStreamError::HighThanNine { index: 2 })
+        );
+        assert_eq_from_slice!(SmallDigitsStream<u8>;
+            [1, 2, 3, 4]; == Err(SmallDigitsStreamError::OverflowDigitsAmount),
+            [3, 5, 5]; == Err(SmallDigitsStreamError::OverflowInSpecificDigit),
+            [2, 6, 5]; == Err(SmallDigitsStreamError::OverflowInSpecificDigit),
+            [2, 5, 6]; == Err(SmallDigitsStreamError::OverflowInSpecificDigit)
+        );
     }
 }
