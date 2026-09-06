@@ -6,7 +6,7 @@ pub struct Storage<T>(pub T);
 #[derive(Debug, PartialEq, Eq)]
 pub enum Error {
     HighThanNine { index: usize },
-    OverflowDigitsAmount,
+    OverflowDigitsAmount { max: usize, recived: usize },
     OverflowInSpecificDigit
 }
 
@@ -53,7 +53,10 @@ macro_rules! impl_unsigned {
                     const AMOUNT_VALID_DIGITS: usize = <$type as RangeLimit<$AMOUNT>>::AMOUNT_VALID_DIGITS;
 
                     if slice_len > AMOUNT_VALID_DIGITS {
-                        Err(Error::OverflowDigitsAmount)?
+                        Err(Error::OverflowDigitsAmount { 
+                            max: AMOUNT_VALID_DIGITS, 
+                            recived: slice_len 
+                        })?
                     }
 
                     if slice_len == AMOUNT_VALID_DIGITS {
@@ -129,7 +132,7 @@ mod tests {
         );
         assert_eq_from_slice!(Storage<u8>;
             [1, 10]; == Err(Error::HighThanNine { index: 1 }),
-            [1, 2, 3, 4]; == Err(Error::OverflowDigitsAmount),
+            [1, 2, 3, 4]; == Err(Error::OverflowDigitsAmount { max: 3, recived: 4 }),
             [3, 5, 5]; == Err(Error::OverflowInSpecificDigit),
             [2, 6, 5]; == Err(Error::OverflowInSpecificDigit),
             [2, 5, 6]; == Err(Error::OverflowInSpecificDigit)
