@@ -72,43 +72,64 @@ fn from_str() {
     }
 }
 
+macro_rules! cases_ops {
+    ($storage:ty = $storage_constructor:expr; $(
+        {
+            lhs => $int_lhs:expr, $stream_lhs:expr;
+            rhs => $int_rhs:expr, $stream_rhs:expr;
+            exp => $int_exp:expr, $stream_exp:expr;
+            desc => $desc:literal
+        }
+     ),*) => {
+        {
+            let mut vec = Vec::new();
+    
+            $(
+                vec.push(
+                    CaseOp::<Decimal<$storage>, Decimal<$storage>, Decimal<$storage>> {
+                        lhs: Decimal::new($int_lhs, $storage_constructor($stream_lhs)),
+                        rhs: Decimal::new($int_rhs, $storage_constructor($stream_rhs)),
+                        expected: Decimal::new($int_exp, $storage_constructor($stream_exp)),
+                        desc: $desc
+                    }
+                );
+            )*
+    
+            vec
+        }
+    };
+}
+
 #[test]
 fn add() {
-    type DecU8Sl<'a> = Decimal<BasicDigitsStream<'a>>;
-    let cases = [
-        (
-            CaseOp::<DecU8Sl, DecU8Sl, DecU8Sl> {
-                lhs: Decimal::new(2, BasicDigitsStream(&[4, 4])),
-                rhs: Decimal::new(1, BasicDigitsStream(&[4, 4])),
-                expected: Decimal::new(3, BasicDigitsStream(&[8, 8])),
-                desc: "Standar sum"
-            }
-        ),
-        (
-            CaseOp::<DecU8Sl, DecU8Sl, DecU8Sl> { 
-                lhs: Decimal::new(2, BasicDigitsStream(&[5, 5])),
-                rhs: Decimal::new(1, BasicDigitsStream(&[4, 5])),
-                expected: Decimal::new(4, BasicDigitsStream(&[])),
-                desc: "Check carry"
-            }
-        ),
-        (
-            CaseOp::<DecU8Sl, DecU8Sl, DecU8Sl> {
-                lhs: Decimal::new(2, BasicDigitsStream(&[5, 5, 6, 6, 8])),
-                rhs: Decimal::new(1, BasicDigitsStream(&[4, 5])),
-                expected: Decimal::new(4, BasicDigitsStream(&[0, 0, 6, 6, 8])),
-                desc: "Lhs with more len than Rhs"
-            }
-        ),
-        (
-            CaseOp::<DecU8Sl, DecU8Sl, DecU8Sl> {
-                lhs: Decimal::new(1, BasicDigitsStream(&[4, 5])),
-                rhs: Decimal::new(2, BasicDigitsStream(&[5, 5, 6, 6, 8])),
-                expected: Decimal::new(4, BasicDigitsStream(&[0, 0, 6, 6, 8])),
-                desc: "Rhs with more len than Lhs"
-            }
-        ),
-    ];
+    let cases = cases_ops!(
+        BasicDigitsStream = BasicDigitsStream;
+
+        {
+            lhs => 2, &[4, 4];
+            rhs => 1, &[4, 4];
+            exp => 3, &[8, 8];
+            desc => "Standar sum"
+        },
+        { 
+            lhs => 2, &[5, 5];
+            rhs => 1, &[4, 5];
+            exp => 4, &[];
+            desc => "Check carry"
+        },
+        {
+            lhs => 2, &[5, 5, 6, 6, 8];
+            rhs => 1, &[4, 5];
+            exp => 4, &[0, 0, 6, 6, 8];
+            desc => "Lhs with more len than Rhs"
+        },
+        {
+            lhs => 1, &[4, 5];
+            rhs => 2, &[5, 5, 6, 6, 8];
+            exp => 4, &[0, 0, 6, 6, 8];
+            desc => "Rhs with more len than Lhs"
+        }
+    );
 
     for case in cases {
         case.add(| lhs, rhs, exp, desc |  {
