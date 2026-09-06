@@ -50,12 +50,13 @@ macro_rules! impl_unsigned {
                 fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
                     let mut res = 0;
                     let slice_len = value.len();
+                    const AMOUNT_VALID_DIGITS: usize = <$type as RangeLimit<$AMOUNT>>::AMOUNT_VALID_DIGITS;
 
-                    if slice_len > <$type as RangeLimit<$AMOUNT>>::AMOUNT_VALID_DIGITS {
+                    if slice_len > AMOUNT_VALID_DIGITS {
                         Err(SmallDigitsStreamError::OverflowDigitsAmount)?
                     }
 
-                    if slice_len == <$type as RangeLimit<$AMOUNT>>::AMOUNT_VALID_DIGITS {
+                    if slice_len == AMOUNT_VALID_DIGITS {
                         for i in 0..slice_len {
                             #[allow(non_snake_case)]
                             let DIGIT = <$type as RangeLimit<$AMOUNT>>::VALID_DIGITS[i];
