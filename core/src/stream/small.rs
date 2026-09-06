@@ -125,10 +125,10 @@ mod tests {
         assert_eq_from_slice!(SmallDigitsStream<u32>; 
             [0, 0, 0, 1]; == Ok(SmallDigitsStream(1)),
             [1, 0, 0, 0]; == Ok(SmallDigitsStream(1000)),
-            [1, 2, 3]; == Ok(SmallDigitsStream(123)),
-            [1, 2, 10]; == Err(SmallDigitsStreamError::HighThanNine { index: 2 })
+            [1, 2, 3]; == Ok(SmallDigitsStream(123))
         );
         assert_eq_from_slice!(SmallDigitsStream<u8>;
+            [1, 10]; == Err(SmallDigitsStreamError::HighThanNine { index: 1 }),
             [1, 2, 3, 4]; == Err(SmallDigitsStreamError::OverflowDigitsAmount),
             [3, 5, 5]; == Err(SmallDigitsStreamError::OverflowInSpecificDigit),
             [2, 6, 5]; == Err(SmallDigitsStreamError::OverflowInSpecificDigit),
