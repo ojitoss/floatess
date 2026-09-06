@@ -123,6 +123,10 @@ mod tests {
         assert_eq!(SmallDigitsStream::<u32>::try_from(*&[0, 0, 0, 1].as_slice()), Ok(SmallDigitsStream(1)));
         assert_eq!(SmallDigitsStream::<u32>::try_from(*&[1, 0, 0, 0].as_slice()), Ok(SmallDigitsStream(1000)));
         assert_eq!(SmallDigitsStream::<u32>::try_from(*&[1, 2, 3].as_slice()), Ok(SmallDigitsStream(123)));
-        assert_eq!(SmallDigitsStream::<u8>::try_from(*&[1, 2, 10].as_slice()), Err(SmallDigitsStreamError::HighThanNine { index: 2 }));
+        assert_eq!(SmallDigitsStream::<u32>::try_from(*&[1, 2, 10].as_slice()), Err(SmallDigitsStreamError::HighThanNine { index: 2 }));
+        assert_eq!(SmallDigitsStream::<u8>::try_from(*&[1, 2, 3, 4].as_slice()), Err(SmallDigitsStreamError::OverflowDigitsAmount));
+        assert_eq!(SmallDigitsStream::<u8>::try_from(*&[3, 5, 5].as_slice()), Err(SmallDigitsStreamError::OverflowInSpecificDigit));
+        assert_eq!(SmallDigitsStream::<u8>::try_from(*&[2, 6, 5].as_slice()), Err(SmallDigitsStreamError::OverflowInSpecificDigit));
+        assert_eq!(SmallDigitsStream::<u8>::try_from(*&[2, 5, 6].as_slice()), Err(SmallDigitsStreamError::OverflowInSpecificDigit));
     }
 }
