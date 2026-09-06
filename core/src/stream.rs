@@ -1,5 +1,6 @@
 pub mod small;
 pub mod basic;
+pub mod whitout;
 
 use std::fmt::{Debug, Display};
 
@@ -39,21 +40,5 @@ impl<T: DigitsStream + Debug> Debug for DigitsStreamUsable<T> {
         let x = format!("{}", self);
 
         write!(f, "({:?} -> {})", self.0, x)
-    }
-}
-
-pub struct WithoutDigitsStream;
-
-impl DigitsStream for WithoutDigitsStream {
-    fn len_digits(&self) -> usize { 0 }
-
-    fn get_digit(&self, _index: usize) -> Option<usize> { None }
-}
-
-impl TryFrom<&[u8]> for WithoutDigitsStream {
-    type Error = ();
-
-    fn try_from(_value: &[u8]) -> Result<Self, Self::Error> {
-        Ok(WithoutDigitsStream)
     }
 }
