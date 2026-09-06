@@ -7,7 +7,7 @@ pub struct Storage<T>(pub T);
 pub enum Error {
     HighThanNine { index: usize },
     OverflowDigitsAmount { max: usize, recived: usize },
-    OverflowInSpecificDigit
+    OverflowInSpecificDigit { digit_index: usize, max_digit_value: u8 }
 }
 
 trait RangeLimit<const N: usize>: Sized {
@@ -66,7 +66,10 @@ macro_rules! impl_unsigned {
                             let digit = value[i];
 
                             if digit > DIGIT {
-                                Err(Error::OverflowInSpecificDigit)?
+                                Err(Error::OverflowInSpecificDigit {
+                                    digit_index: i,
+                                    max_digit_value: DIGIT
+                                })?
                             }
                         }
                     }
@@ -133,9 +136,9 @@ mod tests {
         assert_eq_from_slice!(Storage<u8>;
             [1, 10]; == Err(Error::HighThanNine { index: 1 }),
             [1, 2, 3, 4]; == Err(Error::OverflowDigitsAmount { max: 3, recived: 4 }),
-            [3, 5, 5]; == Err(Error::OverflowInSpecificDigit),
-            [2, 6, 5]; == Err(Error::OverflowInSpecificDigit),
-            [2, 5, 6]; == Err(Error::OverflowInSpecificDigit)
+            [3, 5, 5]; == Err(Error::OverflowInSpecificDigit { digit_index: 0, max_digit_value: 2 }),
+            [2, 6, 5]; == Err(Error::OverflowInSpecificDigit { digit_index: 1, max_digit_value: 5 }),
+            [2, 5, 6]; == Err(Error::OverflowInSpecificDigit { digit_index: 2, max_digit_value: 5 })
         );
     }
 }
