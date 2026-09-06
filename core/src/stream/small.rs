@@ -5,7 +5,8 @@ pub struct SmallDigitsStream<T>(pub T);
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum SmallDigitsStreamError {
-    HighThanNine { index: usize }
+    HighThanNine { index: usize },
+    OverflowDigitsAmount
 }
 
 trait RangeLimit<const N: usize>: Sized {
@@ -48,6 +49,10 @@ macro_rules! impl_unsigned {
                 fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
                     let mut res = 0;
                     let slice_len = value.len();
+
+                    if slice_len > <$type as RangeLimit<$AMOUNT>>::AMOUNT_VALID_DIGITS {
+                        Err(SmallDigitsStreamError::OverflowDigitsAmount)?
+                    }
         
                     for i in 0..slice_len {
                         let digit = value[i];
