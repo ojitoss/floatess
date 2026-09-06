@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use floatess::{DigitsStream, stream::BasicDigitsStream};
+use floatess::{DigitsStream, stream};
 use floatess_decimal::{Decimal, DecimalFromStrErr};
 use tests_tools::{failed_template, CaseOp};
 
@@ -8,7 +8,7 @@ fn from_str() {
     struct Case<'a> {
         input: &'a str,
         expected_str: Option<&'a str>,
-        expected_decimal: Result<Decimal<BasicDigitsStream<'a>>, DecimalFromStrErr>,
+        expected_decimal: Result<Decimal<stream::basic::Storage<'a>>, DecimalFromStrErr>,
         desc: &'a str
     }
 
@@ -17,7 +17,7 @@ fn from_str() {
             Case {
                 input: "1.45", 
                 expected_str: Some("1.45"), 
-                expected_decimal: Ok(Decimal::new(1, BasicDigitsStream(&[4, 5]))), 
+                expected_decimal: Ok(Decimal::new(1, stream::basic::Storage(&[4, 5]))), 
                 desc: "Regular parse"
             }
         ),
@@ -25,7 +25,7 @@ fn from_str() {
             Case {
                 input: "1.",
                 expected_str: Some("1.0"), 
-                expected_decimal: Ok(Decimal::new(1, BasicDigitsStream(&[]))), 
+                expected_decimal: Ok(Decimal::new(1, stream::basic::Storage(&[]))), 
                 desc: "Without post dot digit autocompleter"
             }
         ),
@@ -33,7 +33,7 @@ fn from_str() {
             Case {
                 input: "1",
                 expected_str: Some("1.0"), 
-                expected_decimal: Ok(Decimal::new(1, BasicDigitsStream(&[]))), 
+                expected_decimal: Ok(Decimal::new(1, stream::basic::Storage(&[]))), 
                 desc: "Whitout none decimal part"
             }
         ),
@@ -103,7 +103,7 @@ macro_rules! cases_ops {
 #[test]
 fn add() {
     let cases = cases_ops!(
-        BasicDigitsStream = BasicDigitsStream;
+        stream::basic::Storage = stream::basic::Storage;
 
         {
             lhs => 2, &[4, 4];

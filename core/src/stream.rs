@@ -1,10 +1,7 @@
-mod small;
-mod basic;
+pub mod small;
+pub mod basic;
 
 use std::fmt::{Debug, Display};
-
-pub use small::SmallDigitsStream;
-pub use basic::BasicDigitsStream;
 
 pub trait DigitsStream {
     fn len_digits(&self) -> usize;

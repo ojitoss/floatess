@@ -2,7 +2,7 @@ pub mod ops;
 
 use std::fmt::{Debug, Display};
 
-use floatess::{DigitsStream,  stream::{SmallDigitsStream, DigitsStreamUsable}};
+use floatess::{DigitsStream, stream::{self, DigitsStreamUsable}};
 
 #[derive(PartialEq, Eq)]
 pub struct Decimal<T> {
@@ -91,7 +91,7 @@ impl<T: DigitsStream + Clone> Decimal<T> {
         self.post.0.clone() 
     }
 
-    pub fn get_int_part_as_digits_stream(&self) -> SmallDigitsStream<u32> {
-        SmallDigitsStream(self.pre)
+    pub fn get_int_part_as_digits_stream(&self) -> stream::small::Storage<u32> {
+        stream::small::Storage(self.pre)
     }
 }

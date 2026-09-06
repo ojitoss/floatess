@@ -1,10 +1,10 @@
 use crate::DigitsStream;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct SmallDigitsStream<T>(pub T);
+pub struct Storage<T>(pub T);
 
 #[derive(Debug, PartialEq, Eq)]
-pub enum SmallDigitsStreamError {
+pub enum Error {
     HighThanNine { index: usize },
     OverflowDigitsAmount,
     OverflowInSpecificDigit
@@ -25,7 +25,7 @@ macro_rules! impl_unsigned {
                 const VALID_DIGITS: [u8; $AMOUNT] = $DIGITS;
             }
 
-            impl DigitsStream for SmallDigitsStream<$type> {
+            impl DigitsStream for Storage<$type> {
                 fn len_digits(&self) -> usize {
                     let val = self.0;
                     if val == 0 { return 0 };
@@ -44,8 +44,8 @@ macro_rules! impl_unsigned {
                 }
             }
             
-            impl TryFrom<&[u8]> for SmallDigitsStream<$type> {
-                type Error = SmallDigitsStreamError;
+            impl TryFrom<&[u8]> for Storage<$type> {
+                type Error = Error;
                 
                 fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
                     let mut res = 0;
@@ -53,7 +53,7 @@ macro_rules! impl_unsigned {
                     const AMOUNT_VALID_DIGITS: usize = <$type as RangeLimit<$AMOUNT>>::AMOUNT_VALID_DIGITS;
 
                     if slice_len > AMOUNT_VALID_DIGITS {
-                        Err(SmallDigitsStreamError::OverflowDigitsAmount)?
+                        Err(Error::OverflowDigitsAmount)?
                     }
 
                     if slice_len == AMOUNT_VALID_DIGITS {
@@ -63,7 +63,7 @@ macro_rules! impl_unsigned {
                             let digit = value[i];
 
                             if digit > DIGIT {
-                                Err(SmallDigitsStreamError::OverflowInSpecificDigit)?
+                                Err(Error::OverflowInSpecificDigit)?
                             }
                         }
                     }
@@ -72,7 +72,7 @@ macro_rules! impl_unsigned {
                         let digit = value[i];
 
                         if digit > 9 {
-                            Err(SmallDigitsStreamError::HighThanNine { index: i })?
+                            Err(Error::HighThanNine { index: i })?
                         }
         
                         res *= 10;
@@ -116,23 +116,23 @@ mod tests {
 
     #[test]
     fn amount_digits() {
-        assert_eq!(SmallDigitsStream(0u8).len_digits(), 0);
-        assert_eq!(SmallDigitsStream(123u8).len_digits(), 3);
+        assert_eq!(Storage(0u8).len_digits(), 0);
+        assert_eq!(Storage(123u8).len_digits(), 3);
     }
 
     #[test]
     fn from_slice() {
-        assert_eq_from_slice!(SmallDigitsStream<u32>; 
-            [0, 0, 0, 1]; == Ok(SmallDigitsStream(1)),
-            [1, 0, 0, 0]; == Ok(SmallDigitsStream(1000)),
-            [1, 2, 3]; == Ok(SmallDigitsStream(123))
+        assert_eq_from_slice!(Storage<u32>; 
+            [0, 0, 0, 1]; == Ok(Storage(1)),
+            [1, 0, 0, 0]; == Ok(Storage(1000)),
+            [1, 2, 3]; == Ok(Storage(123))
         );
-        assert_eq_from_slice!(SmallDigitsStream<u8>;
-            [1, 10]; == Err(SmallDigitsStreamError::HighThanNine { index: 1 }),
-            [1, 2, 3, 4]; == Err(SmallDigitsStreamError::OverflowDigitsAmount),
-            [3, 5, 5]; == Err(SmallDigitsStreamError::OverflowInSpecificDigit),
-            [2, 6, 5]; == Err(SmallDigitsStreamError::OverflowInSpecificDigit),
-            [2, 5, 6]; == Err(SmallDigitsStreamError::OverflowInSpecificDigit)
+        assert_eq_from_slice!(Storage<u8>;
+            [1, 10]; == Err(Error::HighThanNine { index: 1 }),
+            [1, 2, 3, 4]; == Err(Error::OverflowDigitsAmount),
+            [3, 5, 5]; == Err(Error::OverflowInSpecificDigit),
+            [2, 6, 5]; == Err(Error::OverflowInSpecificDigit),
+            [2, 5, 6]; == Err(Error::OverflowInSpecificDigit)
         );
     }
 }

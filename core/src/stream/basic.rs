@@ -1,9 +1,9 @@
 use crate::DigitsStream;
 
 #[derive(Debug, PartialEq, Eq, Clone)]
-pub struct BasicDigitsStream<'a>(pub &'a [u8]);
+pub struct Storage<'a>(pub &'a [u8]);
 
-impl<'a> DigitsStream for BasicDigitsStream<'a> {
+impl<'a> DigitsStream for Storage<'a> {
     fn len_digits(&self) -> usize {
         self.0.len()
     }
@@ -17,12 +17,12 @@ impl<'a> DigitsStream for BasicDigitsStream<'a> {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub enum BasicDigitsStreamError {
+pub enum Error {
     HighThanNine { index: usize }
 }
 
-impl<'a> TryFrom<&[u8]> for BasicDigitsStream<'a> {
-    type Error = BasicDigitsStreamError;
+impl<'a> TryFrom<&[u8]> for Storage<'a> {
+    type Error = Error;
     
     fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
         let slice = Vec::from(value);
@@ -31,13 +31,13 @@ impl<'a> TryFrom<&[u8]> for BasicDigitsStream<'a> {
             let digit = slice[i];
 
             if digit > 9 {
-                Err(BasicDigitsStreamError::HighThanNine { index: i })?
+                Err(Error::HighThanNine { index: i })?
             }
         }
 
         let owned_slice = Box::leak(slice.into_boxed_slice());
 
-        Ok(BasicDigitsStream(owned_slice))
+        Ok(Storage(owned_slice))
     }
 }
 
@@ -47,6 +47,6 @@ mod tests {
 
     #[test]
     fn erros() {
-        assert_eq!(BasicDigitsStream::try_from(*&[1, 2, 3, 10].as_slice()), Err(BasicDigitsStreamError::HighThanNine { index: 3 }));
+        assert_eq!(Storage::try_from(*&[1, 2, 3, 10].as_slice()), Err(Error::HighThanNine { index: 3 }));
     }
 }
