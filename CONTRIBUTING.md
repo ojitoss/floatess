@@ -52,4 +52,5 @@ Also had a the next sub contributing guide for a specific module for the workspa
 - [decimal](./decimal/CONTRIBUTING.md)
 
 All of this had the next considerations:
-- The sub modules about a specific root file than target this file (README, CONTRIBUTING and Cargo.toml), target same file but in they folder, example: 'some/README' target 'some/README.md' file
+- The sub modules about a specific root file than target this file (README, CONTRIBUTING and Cargo.toml), target same file but in they folder, example: 'some/README' target 'some/README.md' file.
+- Target a the folder with the same name of the scope, example 'some' scope target de 'scope/' folder.
