@@ -42,9 +42,9 @@ git push -u origin feature/[name]
 This repository is based in *Convencional Commits*, but about this specific repo, also had many *scopes* based in depth (like *feat(x/y/z)*), in this depth had the next ones (all of them target about only one file, the name of the scope (with '.md' if the scope had no extension):
 - [README](./README.md): Used to doucment why is this project as a general description.
 
-- [Cargo.toml](./Cargo.toml): Used to change config of the workspaces.
-
 - [CONTRIBUTING](./CONTRIBUTING.md): Used to indicate the guide of contributing.
+
+- [Cargo.toml](./Cargo.toml): Used to change config of the workspaces.
 
 Also had a the next sub contributing guide for a specific module for the workspace:
 
