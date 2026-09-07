@@ -16,7 +16,7 @@ Provider a safe a no loose operations with any length of digits, based on a stru
 floatess = "0.1"
 ```
 
-## Digits Stream users requeriments 
+## Trait bounds to be a full 'Digit Storage Strategy'
 To conectly fully with this 'ecosistem', the structs than are consired digits streams could be had implememts the next two traits:
 - ```DigitsStream```: The main trait of the create, they path is: ```floatess::stream::{DigitsStream}```. this trait had two main requerimients, a way to get a length of digits, and a way to acces to a specific digit in the stream, example: '12345', had length of 5 and digits 0 is '1' (the acces starts from 0 like array).
 - ```TryFrom<&[u8]>```: This trait works tho can pass from the most basic and safe form to representant any length of digits, to a specific storage strategy of this stream.
