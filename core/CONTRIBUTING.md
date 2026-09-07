@@ -1,4 +1,4 @@
 ### Commits Scopes
-- **storage**: When modified how digits stream things work ago. About a sub modules (like *core/storage/basic*), are mainly when modified files inside folder [digits_storage](./src/digits-storage/), to know the submodule, usually is the name of the file without the '.rs' extension.
+- **storage**: When modified how digits stream things work ago. About a sub modules (like *core/storage/basic*), are mainly when modified files inside folder [digits_storage](./src/digits-storage), to know the submodule, usually is the name of the file without the '.rs' extension.
 
 All of them are not so binary, algthout was mentioned than aplly respective file apply specific scope, not always is like that, example if you make a refactor about 'stream' section probably you modified other files relationed but still as a scope just a 'core/storage' or also if modified somegthing about stream 'basic' but if for some reasons modified [digits_storage.rs](./src/digits_storage.rs), the scope at the end, still a 'core/stream/basic' because are the main commit intention 
