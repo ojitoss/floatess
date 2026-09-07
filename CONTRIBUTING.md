@@ -45,3 +45,8 @@ This repository is based in *Convencional Commits*, but about this specific repo
 - [Cargo.toml](./Cargo.toml): Used to change config of the workspaces.
 
 - [CONTRIBUTING](./CONTRIBUTING.md): Used to indicate the guide of contributing.
+
+Also had a the next sub contributing guide for a specific module for the workspace:
+
+- [core](./core/CONTRIBUTING.md)
+- [decimal](./decimal/CONTRIBUTING.md)
