@@ -19,7 +19,7 @@ Please take a moment to read this document before you get started.
 1. Fork this repository un your own account.
 2. Clone in your local machine:
 ```bash
-git clone https://ojitoss/floatess
+git clone https://[your-username]/floatess
 ```
 3. Create a branch for your changes:
 ```bash
