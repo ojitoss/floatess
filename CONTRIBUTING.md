@@ -30,16 +30,22 @@ git checkout -b feature/[name]
 - Add or update tests for your changes (preferibly the order of commits was: change -> tests)
 
 ### Sumbiting a Pull Request
-1. Push your branch to you own fork:
+1. Execute in your terminal the next commands:
+```bash
+cargo test
+cargo fmt
+```
+If the tests pass correclty, can make the next step.
+2. Push your branch to you own fork:
 ```bash
 git push -u origin feature/[name]
 ```
-2. Open a Pull Request in the **main** branch.
-3. Link your Pull Request to releated issue.
-4. Wait the manteiner review and i'm Best scenario, accept Pull Request, if not, i give you a feedback of why was rejected.
+3. Open a Pull Request in the **main** branch.
+4. Link your Pull Request to releated issue.
+5. Wait the manteiner review and in the best case scenario, accept Pull Request, if not, i give you a feedback of why was rejected.
 
 ### Commits structure 
-This repository is based in *Convencional Commits*, but about this specific repo, also had many *scopes* based in depth (like *feat(x/y/z)*), in this depth had the next ones (all of them target about only one file, the name of the scope (with '.md' if the scope had no extension):
+This repository is based in *Conventional Commits*, but about this specific repo, also had many *scopes* based in depth (like *feat(x/y/z)*), in this depth had the next ones (all of them target about only one file, the name of the scope (with '.md' if the scope had no extension):
 - [README](./README.md): Used to doucment why is this project as a general description.
 
 - [CONTRIBUTING](./CONTRIBUTING.md): Used to indicate the guide of contributing.
