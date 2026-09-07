@@ -1,0 +1,2 @@
+### Commits Scopes
+- **ops**: When modified a GENERAL ops system ([ops.rs](./src/ops.rs) create or modified tools for the rest of ops sub modules). About a sub modules (like in *decimal/ops/add*), are mainly when modified files inside folder [ops](./src/ops/), to know the submodule, usually is the name of the file without the '.rs' extension. 
