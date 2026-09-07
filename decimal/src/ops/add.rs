@@ -1,6 +1,6 @@
 use core::ops::Add;
 use std::fmt::Debug;
-use floatess::{DigitsStream, stream::DigitsStreamUsable};
+use floatess::{DigitsStream, DigitsStreamUsable};
 use crate::{Decimal};
 
 impl<'a, T, S> Add<Decimal<S>> for Decimal<T>
