@@ -50,3 +50,6 @@ Also had a the next sub contributing guide for a specific module for the workspa
 
 - [core](./core/CONTRIBUTING.md)
 - [decimal](./decimal/CONTRIBUTING.md)
+
+All of this had the next considerations:
+- The sub modules about a specific root file than target this file (README, CONTRIBUTING and Cargo.toml), target same file but in they folder, example: 'some/README' target 'some/README.md' file
