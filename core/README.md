@@ -3,7 +3,7 @@
 Provider a safe a no loose operations with any length of digits, based on a structs of digits stream.
 
 ## Why use it?
-- **Customization:** This lib contain and allow via traits, set many strategies with different trade of in perf and space used.
+- **Customization:** This lib contain and allow via traits, set many strategies of storage the digits stream with different trade of in perf and space used.
 - **Small:** No only had no dependencies, is also than specific modules than use this digits streams to create a real structure (like full number, with they int, decimal and periodic part) are sepárate in another sub-crates, this one only contains the core things and not had a any dependency for the other ones.
 
 [![Crates.io](https://img.shields.io/crates/v/floatess.svg)](https://crates.io/crates/floatess)
@@ -21,7 +21,7 @@ To conectly fully with this 'ecosistem', the structs than are consired digits st
 - ```DigitsStream```: The main trait of the create, they path is: ```floatess::stream::{DigitsStream}```. this trait had two main requerimients, a way to get a length of digits, and a way to acces to a specific digit in the stream, example: '12345', had length of 5 and digits 0 is '1' (the acces starts from 0 like array).
 - ```TryFrom<&[u8]>```: This trait works tho can pass from the most basic and safe form to representant any length of digits, to a specific storage strategy of this stream.
 
-## Digits Stream in lib
+## Digits Storages in lib
 Algthout the lib allow make your own digits storages strategies, also contain a default ones (all of them are in the path ```floatess::digits_storage```):
 
 ### Basic
