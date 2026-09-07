@@ -20,12 +20,12 @@ floatess-decimal = "0.1"
 
 ## Example
 ```rs
-use floatess::{stream::{SmallDigitsStream, BasicDigitsStream}};
+use floatess::{digits_storage};
 use floatess_decimal::{Decimal};
 
 fn main() {
-   let a = Decimal::new(5, BasicDigitsStream(&[7, 5, 5]);
-   let b = Decimal::new(10, SmallDigitStream::<u8>(255));
+   let a = Decimal::new(5, digits_storage::basic::Storage(&[7, 5, 5]);
+   let b = Decimal::new(10, digits_storage::small::Storage::<u8>(255));
 
    let res_a_b = a + b;
    let res_b_a = b + a;
@@ -36,7 +36,7 @@ fn main() {
    assert_eq!(format!("{b}"), "10.255");
    assert_eq!(format!("{r}"), "16.01");
 
-   assert_eq!(res_a_b, Ok(Decimal::new(16, BasicDigitsStream(&[0, 1]))));
+   assert_eq!(res_a_b, Ok(Decimal::new(16, digits_storage::basic::Storage(&[0, 1]))));
    assert_eq!(res_b_a, Err(()));
 }
 ```
