@@ -9,10 +9,7 @@ impl<'a> DigitsStream for Storage<'a> {
     }
     
     fn get_digit(&self, index: usize) -> Option<usize> {
-        match self.0.get(index) {
-            Some(n) => Some(*n as usize),
-            None => None
-        }
+        self.0.get(index).map(| x | *x as usize)
     }
 }
 
