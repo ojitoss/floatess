@@ -6,14 +6,14 @@ This project is a serie of rust libs, published in [crates.io](https://crates.io
 Members of this ecosistemas: 
 
 ## Floatess
-*[crates.io link here](https://crates.io/crates/floatess)*
+*crates.io link [here](https://crates.io/crates/floatess)*
 
 *If you want contributing, you can see the [guide](./core/CONTRIBUTING.md)*
 
 The main lib, is based on a trait about digit stream, also had it many structs than are strategies of how storage in memory this digits, every one had diferent trade offs.
 
 ## Floatess Decimal
-*[crates.io link here](https://crates.io/crates/floatess-decimal)*
+*crates.io link [here](https://crates.io/crates/floatess-decimal)*
 
 *If you want contributing, you can see the [guide](./decimal/CONTRIBUTING.md)*
 
