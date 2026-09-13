@@ -1,9 +1,9 @@
 use crate::DigitsStream;
 
 #[derive(Debug, PartialEq, Eq, Clone)]
-pub struct Storage<'a>(pub &'a [u8]);
+pub struct Storage(pub Box<[u8]>);
 
-impl<'a> DigitsStream for Storage<'a> {
+impl DigitsStream for Storage {
     fn len_digits(&self) -> usize {
         self.0.len()
     }
@@ -18,7 +18,7 @@ pub enum Error {
     HighThanNine { index: usize }
 }
 
-impl<'a> TryFrom<&[u8]> for Storage<'a> {
+impl<'a> TryFrom<&[u8]> for Storage {
     type Error = Error;
     
     fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
@@ -32,9 +32,7 @@ impl<'a> TryFrom<&[u8]> for Storage<'a> {
             }
         }
 
-        let owned_slice = Box::leak(slice.into_boxed_slice());
-
-        Ok(Storage(owned_slice))
+        Ok(Storage(slice.into_boxed_slice()))
     }
 }
 
