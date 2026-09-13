@@ -8,7 +8,7 @@ fn from_str() {
     struct Case<'a> {
         input: &'a str,
         expected_str: Option<&'a str>,
-        expected_decimal: Result<Decimal<digits_storage::basic::Storage<'a>>, DecimalFromStrErr>,
+        expected_decimal: Result<Decimal<digits_storage::basic::Storage>, DecimalFromStrErr>,
         desc: &'a str
     }
 
@@ -17,7 +17,7 @@ fn from_str() {
             Case {
                 input: "1.45", 
                 expected_str: Some("1.45"), 
-                expected_decimal: Ok(Decimal::new(1, digits_storage::basic::Storage(&[4, 5]))), 
+                expected_decimal: Ok(Decimal::new(1, digits_storage::basic::Storage(Box::new([4, 5])))), 
                 desc: "Regular parse"
             }
         ),
@@ -25,7 +25,7 @@ fn from_str() {
             Case {
                 input: "1.",
                 expected_str: Some("1.0"), 
-                expected_decimal: Ok(Decimal::new(1, digits_storage::basic::Storage(&[]))), 
+                expected_decimal: Ok(Decimal::new(1, digits_storage::basic::Storage(Box::new([])))), 
                 desc: "Without post dot digit autocompleter"
             }
         ),
@@ -33,7 +33,7 @@ fn from_str() {
             Case {
                 input: "1",
                 expected_str: Some("1.0"), 
-                expected_decimal: Ok(Decimal::new(1, digits_storage::basic::Storage(&[]))), 
+                expected_decimal: Ok(Decimal::new(1, digits_storage::basic::Storage(Box::new([])))), 
                 desc: "Whitout none decimal part"
             }
         ),
@@ -106,27 +106,27 @@ fn add() {
         digits_storage::basic::Storage = digits_storage::basic::Storage;
 
         {
-            lhs => 2, &[4, 4];
-            rhs => 1, &[4, 4];
-            exp => 3, &[8, 8];
+            lhs => 2, Box::new([4, 4]);
+            rhs => 1, Box::new([4, 4]);
+            exp => 3, Box::new([8, 8]);
             desc => "Standar sum"
         },
         { 
-            lhs => 2, &[5, 5];
-            rhs => 1, &[4, 5];
-            exp => 4, &[];
+            lhs => 2, Box::new([5, 5]);
+            rhs => 1, Box::new([4, 5]);
+            exp => 4, Box::new([]);
             desc => "Check carry"
         },
         {
-            lhs => 2, &[5, 5, 6, 6, 8];
-            rhs => 1, &[4, 5];
-            exp => 4, &[0, 0, 6, 6, 8];
+            lhs => 2, Box::new([5, 5, 6, 6, 8]);
+            rhs => 1, Box::new([4, 5]);
+            exp => 4, Box::new([0, 0, 6, 6, 8]);
             desc => "Lhs with more len than Rhs"
         },
         {
-            lhs => 1, &[4, 5];
-            rhs => 2, &[5, 5, 6, 6, 8];
-            exp => 4, &[0, 0, 6, 6, 8];
+            lhs => 1, Box::new([4, 5]);
+            rhs => 2, Box::new([5, 5, 6, 6, 8]);
+            exp => 4, Box::new([0, 0, 6, 6, 8]);
             desc => "Rhs with more len than Lhs"
         }
     );
