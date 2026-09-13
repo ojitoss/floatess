@@ -144,18 +144,18 @@ fn add() {
             let mut res_desc = String::new();
             let decimal_max = usize::max(
                 usize::max(
-                    lhs_decimal_stream.len_digits(), 
-                    rhs_decimal_stream.len_digits()
+                    lhs_decimal_stream.amount_digits(), 
+                    rhs_decimal_stream.amount_digits()
                 ),
-                exp_decimal_stream.len_digits()
+                exp_decimal_stream.amount_digits()
             );
 
             let digits_max = usize::max(
                 usize::max(
-                    lhs_int_stream.len_digits(), 
-                    rhs_int_stream.len_digits()
+                    lhs_int_stream.amount_digits(), 
+                    rhs_int_stream.amount_digits()
                 ),
-                exp_int_stream.len_digits()
+                exp_int_stream.amount_digits()
             );
 
             let pad = "-".repeat(digits_max + decimal_max + 1);

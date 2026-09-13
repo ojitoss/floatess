@@ -3,7 +3,7 @@ use crate::DigitsStream;
 pub struct Storage;
 
 impl DigitsStream for Storage {
-    fn len_digits(&self) -> usize { 0 }
+    fn amount_digits(&self) -> usize { 0 }
 
     fn get_digit(&self, _index: usize) -> Option<usize> { None }
 }

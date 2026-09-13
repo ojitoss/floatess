@@ -3,7 +3,7 @@ pub mod digits_storage;
 use std::fmt::{Debug, Display};
 
 pub trait DigitsStream {
-    fn len_digits(&self) -> usize;
+    fn amount_digits(&self) -> usize;
 
     fn get_digit(&self, index: usize) -> Option<usize>;
 }
@@ -13,7 +13,7 @@ pub struct DigitsStreamUsable<T>(pub T);
 
 impl<T: DigitsStream> Display for DigitsStreamUsable<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let len = self.0.len_digits();
+        let len = self.0.amount_digits();
 
         let post = if len > 0 {
             let mut stack = String::new();

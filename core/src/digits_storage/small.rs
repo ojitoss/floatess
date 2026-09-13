@@ -26,7 +26,7 @@ macro_rules! impl_unsigned {
             }
 
             impl DigitsStream for Storage<$type> {
-                fn len_digits(&self) -> usize {
+                fn amount_digits(&self) -> usize {
                     let val = self.0;
                     if val == 0 { return 0 };
 
@@ -34,7 +34,7 @@ macro_rules! impl_unsigned {
                 }
 
                 fn get_digit(&self, index: usize) -> Option<usize> {
-                    let len = self.len_digits();
+                    let len = self.amount_digits();
  
                     if index >= len { None? }
 
@@ -122,8 +122,8 @@ mod tests {
 
     #[test]
     fn amount_digits() {
-        assert_eq!(Storage(0u8).len_digits(), 0);
-        assert_eq!(Storage(123u8).len_digits(), 3);
+        assert_eq!(Storage(0u8).amount_digits(), 0);
+        assert_eq!(Storage(123u8).amount_digits(), 3);
     }
 
     #[test]

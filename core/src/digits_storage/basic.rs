@@ -4,7 +4,7 @@ use crate::DigitsStream;
 pub struct Storage(pub Box<[u8]>);
 
 impl DigitsStream for Storage {
-    fn len_digits(&self) -> usize {
+    fn amount_digits(&self) -> usize {
         self.0.len()
     }
     

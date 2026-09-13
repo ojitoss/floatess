@@ -13,7 +13,7 @@ where
 
     fn add(self, rhs: Decimal<S>) -> Self::Output  {
         let mut add_one_next = false;
-        let max_len = usize::max(self.post.0.len_digits(), rhs.post.0.len_digits());
+        let max_len = usize::max(self.post.0.amount_digits(), rhs.post.0.amount_digits());
         let mut res = vec![0; max_len];
 
         for i in (0..max_len).rev() {
