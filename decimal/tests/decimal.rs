@@ -73,7 +73,7 @@ fn from_str() {
 }
 
 macro_rules! cases_ops {
-    ($storage:ty = $storage_constructor:expr; $(
+    ($storage:ty; $(
         {
             lhs => $int_lhs:expr, $stream_lhs:expr;
             rhs => $int_rhs:expr, $stream_rhs:expr;
@@ -103,7 +103,7 @@ macro_rules! cases_ops {
 #[test]
 fn add() {
     let cases = cases_ops!(
-        digits_storage::basic::Storage = digits_storage::basic::Storage;
+        digits_storage::basic::Storage;
 
         {
             lhs => 2, [4, 4];
