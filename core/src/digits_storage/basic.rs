@@ -18,7 +18,7 @@ pub enum Error {
     HighThanNine { index: usize }
 }
 
-impl<'a> TryFrom<&[u8]> for Storage {
+impl TryFrom<&[u8]> for Storage {
     type Error = Error;
     
     fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
