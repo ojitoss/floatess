@@ -45,7 +45,9 @@ git push -u origin feature/[name]
 5. Wait the manteiner review and in the best case scenario, accept Pull Request, if not, i give you a feedback of why was rejected.
 
 ### Recommend Code Style
-- Loops: In this project is prefered use loop statment instead of while statment, this because the break condition change their place, exmaple:
+List of recommended ways to code in this project. This was only a recommendation, not a neccesary thing to the PR was accepted.
+
+- Loops: Use loop statment instead of while statment, this because the break condition change their place, exmaple:
 ```rs
 // With 'while' statment
 while i > 0 {
