@@ -44,6 +44,22 @@ git push -u origin feature/[name]
 4. Link your Pull Request to releated issue.
 5. Wait the manteiner review and in the best case scenario, accept Pull Request, if not, i give you a feedback of why was rejected.
 
+### Recommend Code Style
+- Loops: In this project is prefered use loop statment instead of while statment, this because the break condition change their place, exmaple:
+```rs
+// With 'while' statment
+while i > 0 {
+    i -= 1;
+}
+
+// With 'loop' statment (recommended)
+loop {
+   if i <= 0 { break; }
+
+   i -= 1;
+}
+```
+
 ### Commits structure 
 This repository is based in *Conventional Commits*, but about this specific repo, also had many *scopes* based in depth (like *feat(x/y/z)*), in this depth had the next ones (all of them target about only one file, the name of the scope (with '.md' if the scope had no extension):
 - [README](./README.md): Used to doucment why is this project as a general description.
