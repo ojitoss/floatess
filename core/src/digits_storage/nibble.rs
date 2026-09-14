@@ -11,32 +11,25 @@ pub enum Error {
     HighThanNine { index: usize }
 }
 
-impl Storage {
-    fn digit_values(&self) -> Vec<usize> {
-        let mut digits = Vec::new();
-
-        for byte in self.0.iter() {
-            let high = byte >> 4;
-            let low = byte & 0x0F;
-
-            if high == 0 { break; }
-            digits.push((high - 1) as usize);
-
-            if low == 0 { break; }
-            digits.push((low - 1) as usize);
-        }
-
-        digits
-    }
-}
-
 impl DigitsStream for Storage {
     fn amount_digits(&self) -> usize {
-        self.digit_values().len()
+        let len = self.0.len() * 2;
+
+        match self.0.last() {
+            Some(last) if last & 0x0F == 0 => len - 1,
+            _ => len,
+        }
     }
 
     fn get_digit(&self, index: usize) -> Option<usize> {
-        self.digit_values().get(index).copied()
+        if index >= self.amount_digits() {
+            return None;
+        }
+
+        let byte = self.0[index / 2];
+        let nibble = if index % 2 == 0 { byte >> 4 } else { byte & 0x0F };
+
+        if nibble == 0 { None } else { Some(nibble as usize - 1) }
     }
 }
 
@@ -82,7 +75,7 @@ mod tests {
         assert_eq!(Storage(Box::new([0x40])).amount_digits(), 1);
         assert_eq!(Storage(Box::new([0x21])).amount_digits(), 2);
         assert_eq!(Storage(Box::new([0x20])).amount_digits(), 1);
-        assert_eq!(Storage(Box::new([0x01])).amount_digits(), 0);
+        assert_eq!(Storage(Box::new([0x01])).amount_digits(), 2);
     }
 
     #[test]
