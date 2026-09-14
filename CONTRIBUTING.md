@@ -47,7 +47,7 @@ git push -u origin feature/[name]
 ### Recommend Code Style
 List of recommended ways to code in this project. This was only a recommendation, not a neccesary thing to the PR was accepted.
 
-- Loops: Use loop statment instead of while statment, this because the break condition change their place, exmaple:
+- Use 'loop' statment instead of 'while' statment, this because the break condition change their place, exmaple:
 ```rs
 // With 'while' statment
 while i > 0 {
