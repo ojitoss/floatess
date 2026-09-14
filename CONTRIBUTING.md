@@ -27,7 +27,7 @@ git checkout -b feature/[name]
 ```
 
 ### Code quiality
-- Add or update tests for your changes (preferibly the order of commits was: change -> tests)
+- Add or update tests for your changes (preferibly the order of commits was: test -> change (bassicaly TDD))
 
 ### Sumbiting a Pull Request
 1. Execute in your terminal the next commands:
