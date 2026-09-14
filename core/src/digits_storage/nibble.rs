@@ -37,26 +37,32 @@ impl TryFrom<&[u8]> for Storage {
     type Error = Error;
 
     fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
-        let mut nibbles: Vec<u8> = Vec::with_capacity(value.len() * 2);
+        let mut bytes: Vec<u8> = Vec::with_capacity((value.len() + 1) / 2);
+        let mut index = 0;
 
-        for i in 0..value.len() {
-            let digit = value[i];
+        while index < value.len() {
+            let first = value[index];
 
-            if digit > 9 {
-                Err(Error::HighThanNine { index: i })?
+            if first > 9 {
+                Err(Error::HighThanNine { index })?
             }
 
-            nibbles.push(digit + 1);
-        }
+            let high = first + 1;
 
-        if nibbles.len() % 2 != 0 {
-            nibbles.push(0);
-        }
+            let low = if let Some(&second) = value.get(index + 1) {
+                if second > 9 {
+                    Err(Error::HighThanNine { index: index + 1 })?
+                }
 
-        let bytes: Vec<u8> = nibbles
-            .chunks_exact(2)
-            .map(|chunk| (chunk[0] << 4) | chunk[1])
-            .collect();
+                second + 1
+            } else {
+                0
+            };
+
+            bytes.push((high << 4) | low);
+
+            index += 2;
+        }
 
         Ok(Storage(bytes.into_boxed_slice()))
     }
