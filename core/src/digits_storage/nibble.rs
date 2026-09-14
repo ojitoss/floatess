@@ -40,7 +40,11 @@ impl TryFrom<&[u8]> for Storage {
         let mut bytes: Vec<u8> = Vec::with_capacity((value.len() + 1) / 2);
         let mut index = 0;
 
-        while index < value.len() {
+        loop {
+            if index >= value.len() {
+                break;
+            }
+
             let first = value[index];
 
             if first > 9 {
