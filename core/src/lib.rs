@@ -1,4 +1,5 @@
 pub mod digits_storage;
+pub mod partial_ops;
 
 use std::fmt::{Debug, Display};
 
