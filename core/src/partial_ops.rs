@@ -21,18 +21,16 @@ where
 
         for offset in 0..max_len {
             let left = if offset < lhs_len {
-                self.0.get_digit(lhs_len - 1 - offset)
+                self.0.get_digit(lhs_len - 1 - offset).unwrap()
             } else {
-                None
-            }
-            .unwrap_or(0);
+                0
+            };
 
             let right = if offset < rhs_len {
-                rhs.0.get_digit(rhs_len - 1 - offset)
+                rhs.0.get_digit(rhs_len - 1 - offset).unwrap()
             } else {
-                None
-            }
-            .unwrap_or(0);
+                0
+            };
 
             let sum = left + right + carry as usize;
             res[max_len - 1 - offset] = (sum % 10) as u8;
