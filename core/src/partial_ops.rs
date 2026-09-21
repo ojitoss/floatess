@@ -50,12 +50,22 @@ where
 mod tests {
     use crate::{digits_storage, partial_ops::PartialOp};
 
+    macro_rules! assert_eq_ops {
+        ( $a:expr; + $b:expr; $r:expr ) => {
+            assert_eq!(
+                PartialOp(digits_storage::basic::Storage(Box::from($a)))
+                + PartialOp(digits_storage::basic::Storage(Box::from($b))),
+                PartialOp(digits_storage::basic::Storage(Box::from($r)))
+            )
+        };
+    }
+
     #[test]
     fn add() {
-        assert_eq!(
-            PartialOp(digits_storage::basic::Storage(Box::from([1, 3, 4])))
-                + PartialOp(digits_storage::basic::Storage(Box::from([1]))),
-            PartialOp(digits_storage::basic::Storage(Box::from([1, 3, 5])))
+        assert_eq_ops!(
+            [1, 3, 4];
+                + [1];
+            [1, 3, 5]
         );
     }
 }
