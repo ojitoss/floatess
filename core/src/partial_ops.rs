@@ -51,7 +51,7 @@ mod tests {
     use crate::{digits_storage, partial_ops::PartialOp};
 
     #[test]
-    fn x() {
+    fn add() {
         assert_eq!(
             PartialOp(digits_storage::basic::Storage(Box::from([1, 3, 4])))
                 + PartialOp(digits_storage::basic::Storage(Box::from([1]))),
